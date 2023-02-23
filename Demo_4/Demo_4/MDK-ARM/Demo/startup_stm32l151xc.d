@@ -1,0 +1,1 @@
+demo\startup_stm32l151xc.o: startup_stm32l151xc.s

@@ -57,14 +57,11 @@
 
 /* External variables --------------------------------------------------------*/
 extern TIM_HandleTypeDef htim2;
-extern int test;
-extern int run_BT;
-extern int test_BT;
-extern int *ptr;
-extern int time;
-extern int run_time;
-extern int ss;
-extern int run_begin;
+
+extern uint16_t run_BT;
+extern uint16_t check_BT_Run;
+extern uint16_t *ptr_stamp;
+extern uint16_t run_BT_Begin;
 //int run;
 /* USER CODE BEGIN EV */
 
@@ -192,15 +189,19 @@ void SysTick_Handler(void)
 {
   /* USER CODE BEGIN SysTick_IRQn 0 */
 	//run++;
-	if(test_BT==1) run_begin++;
-	else run_begin=0;
-	if(run_begin>1000) run_BT++;
+	if(check_BT_Run==1) run_BT_Begin++;
+	else 
+	{
+		run_BT_Begin=0;
+		run_BT=0;
+	}
+	if(run_BT_Begin>1000) run_BT++;
 	if(HAL_GPIO_ReadPin(GPIOB, GPIO_PIN_4)==0)
 	{
-		if (run_BT>500 && (*ptr)>0)
+		if (run_BT>500 && (*ptr_stamp)>0)
 		{
 			run_BT=0;
-			(*ptr)--;
+			(*ptr_stamp)--;
 		}
 	}
 	if(HAL_GPIO_ReadPin(GPIOB, GPIO_PIN_3)==0)
@@ -208,7 +209,7 @@ void SysTick_Handler(void)
 		if (run_BT>500)
 		{
 			run_BT=0;
-			(*ptr)++;
+			(*ptr_stamp)++;
 		}
 	}
 //	if(HAL_GPIO_ReadPin(GPIOB, GPIO_PIN_3) == 1 && HAL_GPIO_ReadPin(GPIOB, GPIO_PIN_4) == 1 ) run_BT=0;

@@ -1,6 +1,7 @@
 #include "main.h"
 #include "CLCD.h"
 #include <stdio.h>
+#include "user_LCD.h"
 
 #define RELAY1 GPIO_PIN_2 
 #define RELAY2 GPIO_PIN_3
@@ -18,47 +19,44 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim);
 void delay_1ms(void);
 void delay_s(int time);
 void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin);
-//void SysTick_Handler(void);
 
-int t=0;
-int t1=1; //so giay cho an
-int t2=1;	//so phut giua 2 chu ky ban
-int t3=1; //thoi gian giua 2 moto vang va chinh luong 
+uint32_t run_time=0;
+uint16_t time1=1; //so giay cho an
+uint16_t time2=1;	//so phut giua 2 chu ky ban
+uint16_t time3=1; //thoi gian giua 2 moto vang va chinh luong 
 
-int t01;
-int t02;
-int t03;
+uint16_t setupCount;
+uint16_t stamp_time1;
+uint16_t stamp_time2;
+uint16_t stamp_time3;
+uint16_t *ptr_stamp;
 
-int count=0;
-int dem=1;
-int test;
-int *ptr;
+uint16_t State;
+uint16_t count_State;
+
 
 //Check Button
-int run_BT;
-int run_begin;
-int test_BT;
-int BT_ENTER=0, BT_UP=0, BT_DOWN=0, BT_ESC=0;
+uint16_t run_BT;
+uint16_t run_BT_Begin;
+uint16_t check_BT_Run;
 
 //gio phut giay
-int hh, mm, ss;
+uint16_t hh, mm, ss;
 
-CLCD_Name LCD1;
-//uint8_t Count;
-char LCD_send[16];
+uint16_t BT_Enter, BT_Down, BT_Up, BT_Esc;
 
-//hien thi lcd
-void LCD_Running(void);
+CLCD_Name LCD;
 
-//hien thi lcd khi setup thoi gian
-void LCD_Setup(int x);
+void set(uint32_t *t, GPIO_TypeDef* GPIO1, uint16_t GPIO_Pin1, 
+											GPIO_TypeDef* GPIO2, uint16_t GPIO_Pin2,  
+											GPIO_TypeDef* GPIO3, uint16_t GPIO_Pin3);
 
-void set(int *t, GPIO_TypeDef* GPIO1, uint16_t GPIO_Pin1, GPIO_TypeDef* GPIO2, uint16_t GPIO_Pin2,  GPIO_TypeDef* GPIO3, uint16_t GPIO_Pin3);
-void reset(int *t, GPIO_TypeDef* GPIO1, uint16_t GPIO_Pin1, GPIO_TypeDef* GPIO2, uint16_t GPIO_Pin2,  GPIO_TypeDef* GPIO3, uint16_t GPIO_Pin3);
-void check_button(GPIO_TypeDef* GPIOx, uint16_t GPIO_Pinx); // Kiem tra nut nhan
+void reset(uint32_t *t, GPIO_TypeDef* GPIO1, uint16_t GPIO_Pin1, 
+												GPIO_TypeDef* GPIO2, uint16_t GPIO_Pin2,  
+												GPIO_TypeDef* GPIO3, uint16_t GPIO_Pin3);
+
 void check_test(void);
-void set_time(int *hh, int *mm, int *ss);
-void CLCD_clearX(void); //xoa lcd th
+void set_time(uint16_t *hh, uint16_t *mm, uint16_t *ss);
 
 void setup(void);
 
@@ -69,256 +67,169 @@ int main(void)
   MX_GPIO_Init();
   MX_TIM2_Init();
 	HAL_TIM_Base_Start_IT(&htim2);
-	CLCD_4BIT_Init(&LCD1, 16,2, GPIOC, GPIO_PIN_8,GPIOC, GPIO_PIN_7,
-															GPIOC, GPIO_PIN_6,GPIOB, GPIO_PIN_15,
-															GPIOB, GPIO_PIN_14,GPIOB, GPIO_PIN_12);
-	run_begin=0;
-	dem=1;
-	t=0;
-	count=0;
-	test=1;
-	test_BT=0;
+	CLCD_4BIT_Init(&LCD, 16,2, GPIOC, GPIO_PIN_8,GPIOC, GPIO_PIN_7,
+														 GPIOC, GPIO_PIN_6,GPIOB, GPIO_PIN_15,
+														 GPIOB, GPIO_PIN_14,GPIOB, GPIO_PIN_12);
+	run_BT_Begin=0;
+	setupCount=1;
+	run_time=0;
+	count_State=0;
+	State=1;
+	check_BT_Run=0;
 	run_BT=0;
 	hh=0;mm=0;ss=0;
-	while (test==1) 
+	while (State==1) 
 	{
-		CLCD_SetCursor(&LCD1,3,0);
-		CLCD_WriteString(&LCD1,"Nhan ENTER");
+		CLCD_SetCursor(&LCD,3,0);
+		CLCD_WriteString(&LCD,"Nhan ENTER");
 	}
   while (1)
   {
-		switch(test) 
+		if(count_State==0)
 		{
-			case 0:
-					setup();
-					//t=0;
-					//break;
-			case 1:
-					if(count==0)
-					{
-						set(&t, GPIOC, RELAY1, GPIOC, RELAY2,GPIOC, LED5);
-					}
-					if(count==1 && t>=2 )
-					{
-						set(&t, GPIOA, RELAY3, GPIOA, RELAY4,GPIOC, LED6);
-					}
-					if(count==2 && t>=t1 )
-					{
-						reset(&t, GPIOA, RELAY3, GPIOA, RELAY4,GPIOC, LED6);
-					}
-					if(count==3 && t>=t3 )
-					{
-						reset(&t, GPIOC, RELAY1, GPIOC, RELAY2,GPIOC, LED5);
-					}
-					if(count==4 && t>=60*t2)
-					{
-						count=0;
-						t=0;
-					}
-					//break;
+			set(&run_time, GPIOC, RELAY1, GPIOC, RELAY2,GPIOC, LED5);
 		}
+		if(count_State==1 && run_time>=2 )
+		{
+			set(&run_time, GPIOA, RELAY3, GPIOA, RELAY4,GPIOC, LED6);
+		}
+		if(count_State==2 && run_time>=time1 )
+		{
+			reset(&run_time, GPIOA, RELAY3, GPIOA, RELAY4,GPIOC, LED6);
+		}
+		if(count_State==3 && run_time>=time3 )
+		{
+			reset(&run_time, GPIOC, RELAY1, GPIOC, RELAY2,GPIOC, LED5);
+		}
+		if(count_State==4 && run_time>=60*time2)
+		{
+			count_State=0;
+			run_time=0;
+		}
+		
 		set_time(&hh, &mm, &ss);
-		if(test==0) LCD_Setup(dem);
-		else LCD_Running();
+		if(State==1) 
+		{
+			LCD_running_X1(&LCD, &hh, &mm, &ss);
+			LCD_running_X2(&LCD, &time1, &time2, &time3);
+		}
+		else 
+		{
+			LCD_setup_X1(&LCD, &hh, &mm, &ss, &setupCount);
+			LCD_setup_X2(&LCD, ptr_stamp, &setupCount);
+		}
 	}
 }
 
-void setup(void)
-{
-	if(BT_ENTER == 1)
-	{
-	}
-	if( BT_ESC == 1)
-	{
-		if(dem==3) dem=1;
-		else 			 dem++;
-		if(dem==1 ) ptr=&t01;
-		if(dem==2 ) ptr=&t02;
-		if(dem==3 ) ptr=&t03;
-		BT_ESC=0;
-	}
-	if( BT_DOWN == 1)
-		{
-			if(*ptr > 0)(*ptr)--;
-			BT_DOWN=0;
-		}
-	if( BT_UP == 1)
-		{
-			(*ptr)++;
-			BT_UP=0;
-		}
-	
-}
 
 void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin)
 {
 	if(GPIO_Pin == GPIO_PIN_2)
 	{
-		if (test==0) test=1;
-		else 				 test=0;
-		if(test==1)
+		if (State==0) State=1;
+		else 				  State=0;
+		
+		if(State==1)
 		{
+			BT_Enter=0;
 			check_test();
-			BT_ENTER=0;
-			t=0;count=0;
-			t1=t01;t2=t02;t3=t03;
+			run_time=0;
+			count_State=0;
+			time1=stamp_time1;
+			time2=stamp_time2;
+			time3=stamp_time3;
 		}
 		else
 		{
-			t01=t1;
-			t02=t2;
-			t03=t3;
-		//BT_ENTER = 1;
-		//count=0;
-		//t=0;
+			BT_Enter=1;
+			stamp_time1=time1;
+			stamp_time2=time2;
+			stamp_time3=time3;
 		}
-		dem=1;
-		ptr=&t01;
+		setupCount=1;
+		ptr_stamp=&stamp_time1;
 	}
+	
 	if(GPIO_Pin == GPIO_PIN_5 )
 	{
-		if(test==0) BT_ESC=1;
+		if(State==0)
+		{
+		if(setupCount==3) setupCount=1;
+		else 						  setupCount++;
+		if(setupCount==1 ) ptr_stamp=&stamp_time1;
+		if(setupCount==2 ) ptr_stamp=&stamp_time2;
+		if(setupCount==3 ) ptr_stamp=&stamp_time3;
+		}
 	}
+	
 	if(GPIO_Pin == GPIO_PIN_4 )
 	{
-		if(test==0 && HAL_GPIO_ReadPin(GPIOB,GPIO_PIN_4)==0)
+		if(State==0 && HAL_GPIO_ReadPin(GPIOB,GPIO_PIN_4)==0)
 		{
-			BT_DOWN=1;
-			test_BT=1;
+			check_BT_Run=1;
+			if(*ptr_stamp > 0)(*ptr_stamp)--;
 		}
-		if(test==0 && HAL_GPIO_ReadPin(GPIOB,GPIO_PIN_4)==1) 
+		if(State==0 && HAL_GPIO_ReadPin(GPIOB,GPIO_PIN_4)==1) 
 		{
-			test_BT=0;
-			run_BT=0;
+			check_BT_Run=0;
 		}
 	}
+	
 	if(GPIO_Pin == GPIO_PIN_3)
 	{
-		if(test==0 && HAL_GPIO_ReadPin(GPIOB,GPIO_PIN_3)==0) 
+		if(State==0 && HAL_GPIO_ReadPin(GPIOB,GPIO_PIN_3)==0) 
 		{
-			BT_UP=1;
-			test_BT=1;
+			check_BT_Run=1;
+			(*ptr_stamp)++;
 		}
-		if(test==0 && HAL_GPIO_ReadPin(GPIOB,GPIO_PIN_3)==1) 
+		if(State==0 && HAL_GPIO_ReadPin(GPIOB,GPIO_PIN_3)==1) 
 		{
-			test_BT=0;
-			run_BT=0;
+			check_BT_Run=0;
 		}
 	}
 }
 
-void LCD_Running(void)
-{
-	CLCD_SetCursor(&LCD1,0,0);
-	CLCD_WriteString(&LCD1,"Running ");
-	char h[3],m[3],s[3];
-	
-	if(hh<10) sprintf(h,"0%d:", hh);
-	else sprintf(h,"%d:", hh);
-	CLCD_SetCursor(&LCD1,8,0);
-	CLCD_WriteString(&LCD1,h);
-	
-	if(mm<10) sprintf(m,"0%d:", mm);
-	else sprintf(m,"%d:", mm);
-	CLCD_SetCursor(&LCD1,11,0);
-	CLCD_WriteString(&LCD1,m);
-	
-	if(ss<10) sprintf(s,"0%d", ss);
-	else sprintf(s,"%d", ss);
-	CLCD_SetCursor(&LCD1,14,0);
-	CLCD_WriteString(&LCD1,s);
-	
-	sprintf(LCD_send,"T1:%d T2:%d T3:%d     ", t1,t2,t3);
-	CLCD_SetCursor(&LCD1,0,1);
-	CLCD_WriteString(&LCD1,LCD_send);
-}
-
-void LCD_Setup(int x)
-{
-	CLCD_SetCursor(&LCD1,0,0);
-	if(x==1) 			CLCD_WriteString(&LCD1,"SET_T1 ");
-	else if(x==2) CLCD_WriteString(&LCD1,"SET_T2 ");
-	else			  	CLCD_WriteString(&LCD1,"SET_T3 ");
-	
-	char h[3],m[3],s[3];
-	
-	if(hh<10) sprintf(h,"0%d:", hh);
-	else sprintf(h,"%d:", hh);
-	CLCD_SetCursor(&LCD1,8,0);
-	CLCD_WriteString(&LCD1,h);
-	
-	if(mm<10) sprintf(m,"0%d:", mm);
-	else sprintf(m,"%d:", mm);
-	CLCD_SetCursor(&LCD1,11,0);
-	CLCD_WriteString(&LCD1,m);
-	
-	if(ss<10) sprintf(s,"0%d", ss);
-	else sprintf(s,"%d", ss);
-	CLCD_SetCursor(&LCD1,14,0);
-	CLCD_WriteString(&LCD1,s);
-	if(x==1) 			sprintf(LCD_send,"T1:%d Giay      ", t01);
-	else if(x==2) sprintf(LCD_send,"T2:%d Phut      ", t02);
-	if(x==3) 			sprintf(LCD_send,"T3:%d Giay      ", t03);	
-	
-	CLCD_SetCursor(&LCD1,0,1);
-	CLCD_WriteString(&LCD1,LCD_send);
-}
-
-void set(int *t, GPIO_TypeDef* GPIO1, uint16_t GPIO_Pin1, GPIO_TypeDef* GPIO2, uint16_t GPIO_Pin2,  GPIO_TypeDef* GPIO3, uint16_t GPIO_Pin3)
+void set(uint32_t *t, GPIO_TypeDef* GPIO1, uint16_t GPIO_Pin1, 
+											GPIO_TypeDef* GPIO2, uint16_t GPIO_Pin2,  
+											GPIO_TypeDef* GPIO3, uint16_t GPIO_Pin3)
 {
 	HAL_GPIO_WritePin(GPIO1, GPIO_Pin1,GPIO_PIN_SET);
 	HAL_GPIO_WritePin(GPIO2, GPIO_Pin2,GPIO_PIN_SET);
 	HAL_GPIO_WritePin(GPIO3, GPIO_Pin3,GPIO_PIN_SET);
-		count++;
+		count_State++;
 		*t=0;
-	//Onlcd(run, 0);
 }
-void reset(int *t, GPIO_TypeDef* GPIO1, uint16_t GPIO_Pin1, GPIO_TypeDef* GPIO2, uint16_t GPIO_Pin2,  GPIO_TypeDef* GPIO3, uint16_t GPIO_Pin3)
+void reset(uint32_t *t, GPIO_TypeDef* GPIO1, uint16_t GPIO_Pin1, 
+												GPIO_TypeDef* GPIO2, uint16_t GPIO_Pin2,  
+												GPIO_TypeDef* GPIO3, uint16_t GPIO_Pin3)
 {
 	HAL_GPIO_WritePin(GPIO1, GPIO_Pin1,GPIO_PIN_RESET);
 	HAL_GPIO_WritePin(GPIO2, GPIO_Pin2,GPIO_PIN_RESET);
 	HAL_GPIO_WritePin(GPIO3, GPIO_Pin3,GPIO_PIN_RESET);
-		count++;
+		count_State++;
 		*t=0;
-	//Onlcd(run, 0);
 }
 
-void set_time(int *hh, int *mm, int *ss)
+void set_time(uint16_t *hh, uint16_t *mm, uint16_t *ss)
 {
-	*hh=t/3600;
-	*mm=(t-(*hh)*3600)/60;
-	*ss=(t-(*hh)*3600-(*mm)*60);
-	if(t>=86399)
+	*hh=run_time/3600;
+	*mm=(run_time-(*hh)*3600)/60;
+	*ss=(run_time-(*hh)*3600-(*mm)*60);
+	if(run_time>=86399)
 	{
-	t=0; *hh=0; *mm=0; *ss=0;
+	run_time=0; *hh=0; *mm=0; *ss=0;
 	}
-}
-
-void check_button(GPIO_TypeDef* GPIOx, uint16_t GPIO_Pinx)
-{
-	run_BT=0;
-	if (HAL_GPIO_ReadPin(GPIOx, GPIO_Pinx)==0) test_BT=0;
-	else test_BT=1;
 }
 
 void check_test(void)
 {
-	if(test == 0)
+	if(State == 0)
 	{
-		reset(&t, GPIOC, RELAY1, GPIOC, RELAY2,GPIOC, LED5);
-		reset(&t, GPIOA, RELAY3, GPIOA, RELAY4,GPIOC, LED6);
-		count=0;
-		t=0;
-		//CLCD_Clear(&LCD1);
-		//CLCD_clearX();
-		//lcd_on(dem);
+		reset(&run_time, GPIOC, RELAY1, GPIOC, RELAY2,GPIOC, LED5);
+		reset(&run_time, GPIOA, RELAY3, GPIOA, RELAY4,GPIOC, LED6);
+		count_State=0;
+		run_time=0;
 	}
-}
-
-void CLCD_clearX(void)
-{
-	CLCD_SetCursor(&LCD1,0,0);
-	CLCD_WriteString(&LCD1,"                 ");
 }
 
 void SystemClock_Config(void)
@@ -477,7 +388,7 @@ void Error_Handler(void)
 void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
 {
   UNUSED(htim);
-	t++;
+	run_time++;
 }
 void delay_1ms(void)
 {

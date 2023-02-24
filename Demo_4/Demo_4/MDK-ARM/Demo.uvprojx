@@ -312,7 +312,7 @@
           </ArmAdsMisc>
           <Cads>
             <interw>1</interw>
-            <Optim>4</Optim>
+            <Optim>1</Optim>
             <oTime>0</oTime>
             <SplitLS>0</SplitLS>
             <OneElfS>1</OneElfS>
@@ -338,7 +338,7 @@
               <MiscControls></MiscControls>
               <Define>USE_HAL_DRIVER,STM32L151xC,USE_HAL_DRIVER,STM32L151xC</Define>
               <Undefine></Undefine>
-              <IncludePath>../Inc;../Drivers/STM32L1xx_HAL_Driver/Inc;../Drivers/STM32L1xx_HAL_Driver/Inc/Legacy;../Drivers/CMSIS/Device/ST/STM32L1xx/Include;../Drivers/CMSIS/Include;..\..\STM32_Device_Lib-master\STM32_Device_Lib-master\Device Lib\Inc</IncludePath>
+              <IncludePath>../Inc;../Drivers/STM32L1xx_HAL_Driver/Inc;../Drivers/STM32L1xx_HAL_Driver/Inc/Legacy;../Drivers/CMSIS/Device/ST/STM32L1xx/Include;../Drivers/CMSIS/Include;..\Drivers\Mylib_driver\Inc</IncludePath>
             </VariousControls>
           </Cads>
           <Aads>
@@ -406,11 +406,6 @@
               <FileName>stm32l1xx_hal_msp.c</FileName>
               <FileType>1</FileType>
               <FilePath>../Src/stm32l1xx_hal_msp.c</FilePath>
-            </File>
-            <File>
-              <FileName>CLCD.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\STM32_Device_Lib-master\STM32_Device_Lib-master\Device Lib\Src\CLCD.c</FilePath>
             </File>
           </Files>
         </Group>
@@ -482,6 +477,11 @@
               <FileType>1</FileType>
               <FilePath>../Drivers/STM32L1xx_HAL_Driver/Src/stm32l1xx_hal_cortex.c</FilePath>
             </File>
+            <File>
+              <FileName>CLCD.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Drivers\STM32L1xx_HAL_Driver\Src\CLCD.c</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>
@@ -491,6 +491,21 @@
               <FileName>system_stm32l1xx.c</FileName>
               <FileType>1</FileType>
               <FilePath>../Src/system_stm32l1xx.c</FilePath>
+            </File>
+          </Files>
+        </Group>
+        <Group>
+          <GroupName>Mylib</GroupName>
+          <Files>
+            <File>
+              <FileName>user_LCD.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Drivers\Mylib_driver\Src\user_LCD.c</FilePath>
+            </File>
+            <File>
+              <FileName>check_Button.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Drivers\Mylib_driver\Src\check_Button.c</FilePath>
             </File>
           </Files>
         </Group>

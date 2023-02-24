@@ -28,5 +28,6 @@ demo\main.o: ../Drivers/STM32L1xx_HAL_Driver/Inc/stm32l1xx_hal_pwr.h
 demo\main.o: ../Drivers/STM32L1xx_HAL_Driver/Inc/stm32l1xx_hal_pwr_ex.h
 demo\main.o: ../Drivers/STM32L1xx_HAL_Driver/Inc/stm32l1xx_hal_tim.h
 demo\main.o: ../Drivers/STM32L1xx_HAL_Driver/Inc/stm32l1xx_hal_tim_ex.h
-demo\main.o: ..\..\STM32_Device_Lib-master\STM32_Device_Lib-master\Device Lib\Inc\CLCD.h
+demo\main.o: ../Drivers/STM32L1xx_HAL_Driver/Inc/CLCD.h
 demo\main.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdio.h
+demo\main.o: ..\Drivers\Mylib_driver\Inc\user_LCD.h

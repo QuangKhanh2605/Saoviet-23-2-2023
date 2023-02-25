@@ -41,12 +41,12 @@ uint16_t BT_Enter, BT_Down, BT_Up, BT_Esc;
 
 CLCD_Name LCD;
 void set(uint32_t *t, GPIO_TypeDef* GPIO1, uint16_t GPIO_Pin1, 
-											GPIO_TypeDef* GPIO2, uint16_t GPIO_Pin2,  
-											GPIO_TypeDef* GPIO3, uint16_t GPIO_Pin3);
+                      GPIO_TypeDef* GPIO2, uint16_t GPIO_Pin2,  
+                      GPIO_TypeDef* GPIO3, uint16_t GPIO_Pin3);
 
 void reset(uint32_t *t, GPIO_TypeDef* GPIO1, uint16_t GPIO_Pin1, 
-												GPIO_TypeDef* GPIO2, uint16_t GPIO_Pin2,  
-												GPIO_TypeDef* GPIO3, uint16_t GPIO_Pin3);
+                        GPIO_TypeDef* GPIO2, uint16_t GPIO_Pin2,  
+                        GPIO_TypeDef* GPIO3, uint16_t GPIO_Pin3);
 
 void check_test(void);
 void set_time(uint16_t *hh, uint16_t *mm, uint16_t *ss);

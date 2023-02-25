@@ -31,3 +31,5 @@ demo\main.o: ../Drivers/STM32L1xx_HAL_Driver/Inc/stm32l1xx_hal_tim_ex.h
 demo\main.o: ../Drivers/STM32L1xx_HAL_Driver/Inc/CLCD.h
 demo\main.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdio.h
 demo\main.o: ..\Drivers\Mylib_driver\Inc\user_LCD.h
+demo\main.o: ..\Drivers\Mylib_driver\Inc\check_Button.h
+demo\main.o: ../Inc/stm32l1xx_it.h

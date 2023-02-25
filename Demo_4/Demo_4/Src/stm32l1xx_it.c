@@ -58,10 +58,8 @@
 /* External variables --------------------------------------------------------*/
 extern TIM_HandleTypeDef htim2;
 
-extern uint16_t run_BT;
-extern uint16_t check_BT_Run;
-extern uint16_t *ptr_stamp;
-extern uint16_t run_BT_Begin;
+
+
 //int run;
 /* USER CODE BEGIN EV */
 
@@ -188,33 +186,11 @@ void PendSV_Handler(void)
 void SysTick_Handler(void)
 {
   /* USER CODE BEGIN SysTick_IRQn 0 */
-	//run++;
-	if(check_BT_Run==1) run_BT_Begin++;
-	else 
-	{
-		run_BT_Begin=0;
-		run_BT=0;
-	}
-	if(run_BT_Begin>1000) run_BT++;
-	if(HAL_GPIO_ReadPin(GPIOB, GPIO_PIN_4)==0)
-	{
-		if (run_BT>500 && (*ptr_stamp)>0)
-		{
-			run_BT=0;
-			(*ptr_stamp)--;
-		}
-	}
-	if(HAL_GPIO_ReadPin(GPIOB, GPIO_PIN_3)==0)
-	{
-		if (run_BT>500)
-		{
-			run_BT=0;
-			(*ptr_stamp)++;
-		}
-	}
-//	if(HAL_GPIO_ReadPin(GPIOB, GPIO_PIN_3) == 1 && HAL_GPIO_ReadPin(GPIOB, GPIO_PIN_4) == 1 ) run_BT=0;
-  /* USER CODE END SysTick_IRQn 0 */
+
+
   HAL_IncTick();
+	HAL_SYSTICK_IRQHandler();
+	
   /* USER CODE BEGIN SysTick_IRQn 1 */
 
   /* USER CODE END SysTick_IRQn 1 */

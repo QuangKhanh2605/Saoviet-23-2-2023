@@ -5,7 +5,12 @@
 #include <stdio.h>
 #include "stm32l1xx_hal.h"
 
-void press_Click_BT( uint16_t *state, uint16_t *BT_Enter, uint16_t *BT_Down, uint16_t *BT_UP, uint16_t *BT_Esc);
-void press_Hold_BT( GPIO_TypeDef* GPIO1, uint16_t GPIO_Pin1, GPIO_TypeDef* GPIO2, uint16_t GPIO_Pin2);
+void HAL_SYSTICK_Callback(void);
+
+void press_Click_BT_Up(uint16_t *BT_UP, uint16_t *ptr_stamp);
+void press_Click_BT_Down(uint16_t *BT_Down, uint16_t *ptr_stamp);
+void press_Hold_BT_Up( GPIO_TypeDef* GPIOx, uint16_t GPIO_Pinx, uint16_t *ptr_stamp);
+void press_Hold_BT_DOWN( GPIO_TypeDef* GPIOx, uint16_t GPIO_Pinx, uint16_t *ptr_stamp);
+
 
 #endif

@@ -20,6 +20,7 @@
 "demo\system_stm32l1xx.o"
 "demo\user_lcd.o"
 "demo\check_button.o"
+"demo\relay_led.o"
 --library_type=microlib --strict --scatter "Demo\Demo.sct"
 --summary_stderr --info summarysizes --map --load_addr_map_info --xref --callgraph --symbols
 --info sizes --info totals --info unused --info veneers

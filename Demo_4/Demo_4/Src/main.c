@@ -3,13 +3,14 @@
 #include <stdio.h>
 #include "user_LCD.h"
 #include "check_Button.h"
+#include "Relay_Led.h"
 
 #define RELAY1 GPIO_PIN_2 
 #define RELAY2 GPIO_PIN_3
 #define RELAY3 GPIO_PIN_0
 #define RELAY4 GPIO_PIN_1
-#define LED5 	 GPIO_PIN_0
-#define LED6	 GPIO_PIN_1
+#define LED5   GPIO_PIN_0
+#define LED6   GPIO_PIN_1
 
 TIM_HandleTypeDef htim2;
 
@@ -17,23 +18,27 @@ void SystemClock_Config(void);
 static void MX_GPIO_Init(void);
 static void MX_TIM2_Init(void);
 void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim);
+void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin);
+
 void delay_1ms(void);
 void delay_s(int time);
-void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin);
+void check_test(void);
+void set_time(uint16_t *hh, uint16_t *mm, uint16_t *ss);
+void run_Feed_Shrimp(void);
 
 uint32_t runTime=0;
 uint16_t time1=1; //so giay cho an
 uint16_t time2=1;	//so phut giua 2 chu ky ban
 uint16_t time3=1; //thoi gian giua 2 moto vang va chinh luong 
 
-uint16_t setupCount;
+uint16_t setupCount=1;
 uint16_t stampTime1;
 uint16_t stampTime2;
 uint16_t stampTime3;
 uint16_t *ptrStamp;
 
-uint16_t State;
-uint16_t countState;
+uint16_t State=1;
+uint16_t countState=0;
 
 //gio phut giay
 uint16_t hh, mm, ss;
@@ -41,17 +46,6 @@ uint16_t hh, mm, ss;
 uint16_t BT_up, BT_down;
 
 CLCD_Name LCD;
-
-void set(uint32_t *runTime, GPIO_TypeDef* GPIO1, uint16_t GPIO_Pin1, 
-											      GPIO_TypeDef* GPIO2, uint16_t GPIO_Pin2,  
-                            GPIO_TypeDef* GPIO3, uint16_t GPIO_Pin3);
-
-void reset(uint32_t *runTime, GPIO_TypeDef* GPIO1, uint16_t GPIO_Pin1, 
-                              GPIO_TypeDef* GPIO2, uint16_t GPIO_Pin2,  
-                              GPIO_TypeDef* GPIO3, uint16_t GPIO_Pin3);
-
-void check_test(void);
-void set_time(uint16_t *hh, uint16_t *mm, uint16_t *ss);
 
 int main(void)
 {
@@ -61,12 +55,8 @@ int main(void)
   MX_TIM2_Init();
 	HAL_TIM_Base_Start_IT(&htim2);
 	CLCD_4BIT_Init(&LCD, 16,2, GPIOC, GPIO_PIN_8,GPIOC, GPIO_PIN_7,
-														 GPIOC, GPIO_PIN_6,GPIOB, GPIO_PIN_15,
-														 GPIOB, GPIO_PIN_14,GPIOB, GPIO_PIN_12);
-	setupCount=1;
-	runTime=0;
-	countState=0;
-	State=1;
+                             GPIOC, GPIO_PIN_6,GPIOB, GPIO_PIN_15,
+                             GPIOB, GPIO_PIN_14,GPIOB, GPIO_PIN_12);
 	
 	while (State==1) 
 	{
@@ -77,28 +67,7 @@ int main(void)
   while (1)
   {	
 		set_time(&hh, &mm, &ss);
-		
-		if(countState==0)
-		{
-			set(&runTime, GPIOC, RELAY1, GPIOC, RELAY2,GPIOC, LED5);
-		}
-		if(countState==1 && runTime>=2 )
-		{
-			set(&runTime, GPIOA, RELAY3, GPIOA, RELAY4,GPIOC, LED6);
-		}
-		if(countState==2 && runTime>=time1 )
-		{
-			reset(&runTime, GPIOA, RELAY3, GPIOA, RELAY4,GPIOC, LED6);
-		}
-		if(countState==3 && runTime>=time3 )
-		{
-			reset(&runTime, GPIOC, RELAY1, GPIOC, RELAY2,GPIOC, LED5);
-		}
-		if(countState==4 && runTime>=60*time2)
-		{
-			runTime=0;
-			countState=0;
-		}
+		run_Feed_Shrimp();
 		
 		if(State==1) 
 		{
@@ -117,6 +86,39 @@ int main(void)
 			LCD_setup_X2(&LCD, *ptrStamp, setupCount);
 		}
 	}
+}
+
+void run_Feed_Shrimp(void)
+{
+	if(countState==0)
+		{
+			Set_Relay_Led(GPIOC, RELAY1, GPIOC, RELAY2,GPIOC, LED5);
+			countState++;
+			runTime=0;
+		}
+		if(countState==1 && runTime>=2 )
+		{
+			Set_Relay_Led(GPIOA, RELAY3, GPIOA, RELAY4,GPIOC, LED6);
+			countState++;
+			runTime=0;
+		}
+		if(countState==2 && runTime>=time1 )
+		{
+			Reset_Relay_Led(GPIOA, RELAY3, GPIOA, RELAY4,GPIOC, LED6);
+			countState++;
+			runTime=0;
+		}
+		if(countState==3 && runTime>=time3 )
+		{
+			Reset_Relay_Led(GPIOC, RELAY1, GPIOC, RELAY2,GPIOC, LED5);
+			countState++;
+			runTime=0;
+		}
+		if(countState==4 && runTime>=60*time2)
+		{
+			runTime=0;
+			countState=0;
+		}
 }
 
 void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin)
@@ -175,32 +177,12 @@ void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin)
 	}
 }
 
-void set(uint32_t *runTime, GPIO_TypeDef* GPIO1, uint16_t GPIO_Pin1, 
-                            GPIO_TypeDef* GPIO2, uint16_t GPIO_Pin2,  
-                            GPIO_TypeDef* GPIO3, uint16_t GPIO_Pin3)
-{
-	HAL_GPIO_WritePin(GPIO1, GPIO_Pin1,GPIO_PIN_SET);
-	HAL_GPIO_WritePin(GPIO2, GPIO_Pin2,GPIO_PIN_SET);
-	HAL_GPIO_WritePin(GPIO3, GPIO_Pin3,GPIO_PIN_SET);
-		countState++;
-		*runTime=0;
-}
-void reset(uint32_t *runTime, GPIO_TypeDef* GPIO1, uint16_t GPIO_Pin1, 
-                              GPIO_TypeDef* GPIO2, uint16_t GPIO_Pin2,  
-                              GPIO_TypeDef* GPIO3, uint16_t GPIO_Pin3)
-{
-	HAL_GPIO_WritePin(GPIO1, GPIO_Pin1,GPIO_PIN_RESET);
-	HAL_GPIO_WritePin(GPIO2, GPIO_Pin2,GPIO_PIN_RESET);
-	HAL_GPIO_WritePin(GPIO3, GPIO_Pin3,GPIO_PIN_RESET);
-		countState++;
-		*runTime=0;
-}
-
 void set_time(uint16_t *hh, uint16_t *mm, uint16_t *ss)
 {
 	const uint16_t MINUTES_OF_THE_HOUR=60;
 	const uint16_t SECOND_OF_THE_HOUR=60;
 	const uint32_t SECOND_OF_THE_DAY=86400;
+	
 	*hh=runTime/(MINUTES_OF_THE_HOUR*SECOND_OF_THE_HOUR);
 	*mm=(runTime-(*hh)*MINUTES_OF_THE_HOUR*SECOND_OF_THE_HOUR)/SECOND_OF_THE_HOUR;
 	*ss=(runTime-(*hh)*MINUTES_OF_THE_HOUR*SECOND_OF_THE_HOUR-(*mm)*SECOND_OF_THE_HOUR);
@@ -214,8 +196,8 @@ void check_test(void)
 {
 	if(State == 0)
 	{
-		reset(&runTime, GPIOC, RELAY1, GPIOC, RELAY2,GPIOC, LED5);
-		reset(&runTime, GPIOA, RELAY3, GPIOA, RELAY4,GPIOC, LED6);
+		Reset_Relay_Led(GPIOC, RELAY1, GPIOC, RELAY2,GPIOC, LED5);
+		Reset_Relay_Led(GPIOA, RELAY3, GPIOA, RELAY4,GPIOC, LED6);
 		countState=0;
 		runTime=0;
 	}

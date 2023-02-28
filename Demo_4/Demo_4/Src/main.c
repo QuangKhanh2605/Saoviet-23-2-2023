@@ -38,15 +38,15 @@ uint16_t countState;
 //gio phut giay
 uint16_t hh, mm, ss;
 
-uint16_t BT_Enter, BT_Down, BT_Up, BT_Esc;
+uint16_t BT_up, BT_down;
 
 CLCD_Name LCD;
 
-void set(uint32_t *t, GPIO_TypeDef* GPIO1, uint16_t GPIO_Pin1, 
+void set(uint32_t *runTime, GPIO_TypeDef* GPIO1, uint16_t GPIO_Pin1, 
                       GPIO_TypeDef* GPIO2, uint16_t GPIO_Pin2,  
                       GPIO_TypeDef* GPIO3, uint16_t GPIO_Pin3);
 
-void reset(uint32_t *t, GPIO_TypeDef* GPIO1, uint16_t GPIO_Pin1, 
+void reset(uint32_t *runTime, GPIO_TypeDef* GPIO1, uint16_t GPIO_Pin1, 
                         GPIO_TypeDef* GPIO2, uint16_t GPIO_Pin2,  
                         GPIO_TypeDef* GPIO3, uint16_t GPIO_Pin3);
 
@@ -107,11 +107,11 @@ int main(void)
 		}
 		else 
 		{
-			press_Click_BT_Up(&BT_Up, ptrStamp);
-			press_Click_BT_Down(&BT_Down, ptrStamp);
+			press_click_BT_up(&BT_up, ptrStamp);
+			press_click_BT_down(&BT_down, ptrStamp);
 			
-			press_Hold_BT_Up(GPIOB, GPIO_PIN_3, ptrStamp);
-			press_Hold_BT_DOWN(GPIOB, GPIO_PIN_4, ptrStamp);
+			press_hold_BT_up(GPIOB, GPIO_PIN_3, ptrStamp);
+			press_hold_BT_down(GPIOB, GPIO_PIN_4, ptrStamp);
 			
 			LCD_setup_X1(&LCD, hh, mm, ss, setupCount);
 			LCD_setup_X2(&LCD, *ptrStamp, setupCount);
@@ -162,7 +162,7 @@ void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin)
 	{
 		if(State==0) 
 		{
-			BT_Down=1;
+			BT_down=1;
 		}
 	}
 	
@@ -170,12 +170,12 @@ void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin)
 	{
 		if(State==0) 
 		{
-			BT_Up=1;
+			BT_up=1;
 		}
 	}
 }
 
-void set(uint32_t *t, GPIO_TypeDef* GPIO1, uint16_t GPIO_Pin1, 
+void set(uint32_t *runTime, GPIO_TypeDef* GPIO1, uint16_t GPIO_Pin1, 
 											GPIO_TypeDef* GPIO2, uint16_t GPIO_Pin2,  
 											GPIO_TypeDef* GPIO3, uint16_t GPIO_Pin3)
 {
@@ -183,9 +183,9 @@ void set(uint32_t *t, GPIO_TypeDef* GPIO1, uint16_t GPIO_Pin1,
 	HAL_GPIO_WritePin(GPIO2, GPIO_Pin2,GPIO_PIN_SET);
 	HAL_GPIO_WritePin(GPIO3, GPIO_Pin3,GPIO_PIN_SET);
 		countState++;
-		*t=0;
+		*runTime=0;
 }
-void reset(uint32_t *t, GPIO_TypeDef* GPIO1, uint16_t GPIO_Pin1, 
+void reset(uint32_t *runTime, GPIO_TypeDef* GPIO1, uint16_t GPIO_Pin1, 
 												GPIO_TypeDef* GPIO2, uint16_t GPIO_Pin2,  
 												GPIO_TypeDef* GPIO3, uint16_t GPIO_Pin3)
 {
@@ -193,14 +193,16 @@ void reset(uint32_t *t, GPIO_TypeDef* GPIO1, uint16_t GPIO_Pin1,
 	HAL_GPIO_WritePin(GPIO2, GPIO_Pin2,GPIO_PIN_RESET);
 	HAL_GPIO_WritePin(GPIO3, GPIO_Pin3,GPIO_PIN_RESET);
 		countState++;
-		*t=0;
+		*runTime=0;
 }
 
 void set_time(uint16_t *hh, uint16_t *mm, uint16_t *ss)
 {
-	*hh=runTime/3600;
-	*mm=(runTime-(*hh)*3600)/60;
-	*ss=(runTime-(*hh)*3600-(*mm)*60);
+	uint16_t minutes_of_the_hour=60;
+	uint16_t second_of_the_minutes=60;
+	*hh=runTime/(minutes_of_the_hour*second_of_the_minutes);
+	*mm=(runTime-(*hh)*minutes_of_the_hour*second_of_the_minutes)/second_of_the_minutes;
+	*ss=(runTime-(*hh)*minutes_of_the_hour*second_of_the_minutes-(*mm)*second_of_the_minutes);
 	if(runTime>=86399)
 	{
 	runTime=0; *hh=0; *mm=0; *ss=0;

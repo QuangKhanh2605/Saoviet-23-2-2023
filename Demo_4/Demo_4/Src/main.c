@@ -43,12 +43,12 @@ uint16_t BT_up, BT_down;
 CLCD_Name LCD;
 
 void set(uint32_t *runTime, GPIO_TypeDef* GPIO1, uint16_t GPIO_Pin1, 
-                      GPIO_TypeDef* GPIO2, uint16_t GPIO_Pin2,  
-                      GPIO_TypeDef* GPIO3, uint16_t GPIO_Pin3);
+											      GPIO_TypeDef* GPIO2, uint16_t GPIO_Pin2,  
+                            GPIO_TypeDef* GPIO3, uint16_t GPIO_Pin3);
 
 void reset(uint32_t *runTime, GPIO_TypeDef* GPIO1, uint16_t GPIO_Pin1, 
-                        GPIO_TypeDef* GPIO2, uint16_t GPIO_Pin2,  
-                        GPIO_TypeDef* GPIO3, uint16_t GPIO_Pin3);
+                              GPIO_TypeDef* GPIO2, uint16_t GPIO_Pin2,  
+                              GPIO_TypeDef* GPIO3, uint16_t GPIO_Pin3);
 
 void check_test(void);
 void set_time(uint16_t *hh, uint16_t *mm, uint16_t *ss);
@@ -176,8 +176,8 @@ void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin)
 }
 
 void set(uint32_t *runTime, GPIO_TypeDef* GPIO1, uint16_t GPIO_Pin1, 
-											GPIO_TypeDef* GPIO2, uint16_t GPIO_Pin2,  
-											GPIO_TypeDef* GPIO3, uint16_t GPIO_Pin3)
+                            GPIO_TypeDef* GPIO2, uint16_t GPIO_Pin2,  
+                            GPIO_TypeDef* GPIO3, uint16_t GPIO_Pin3)
 {
 	HAL_GPIO_WritePin(GPIO1, GPIO_Pin1,GPIO_PIN_SET);
 	HAL_GPIO_WritePin(GPIO2, GPIO_Pin2,GPIO_PIN_SET);
@@ -186,8 +186,8 @@ void set(uint32_t *runTime, GPIO_TypeDef* GPIO1, uint16_t GPIO_Pin1,
 		*runTime=0;
 }
 void reset(uint32_t *runTime, GPIO_TypeDef* GPIO1, uint16_t GPIO_Pin1, 
-												GPIO_TypeDef* GPIO2, uint16_t GPIO_Pin2,  
-												GPIO_TypeDef* GPIO3, uint16_t GPIO_Pin3)
+                              GPIO_TypeDef* GPIO2, uint16_t GPIO_Pin2,  
+                              GPIO_TypeDef* GPIO3, uint16_t GPIO_Pin3)
 {
 	HAL_GPIO_WritePin(GPIO1, GPIO_Pin1,GPIO_PIN_RESET);
 	HAL_GPIO_WritePin(GPIO2, GPIO_Pin2,GPIO_PIN_RESET);
@@ -198,11 +198,11 @@ void reset(uint32_t *runTime, GPIO_TypeDef* GPIO1, uint16_t GPIO_Pin1,
 
 void set_time(uint16_t *hh, uint16_t *mm, uint16_t *ss)
 {
-	uint16_t minutes_of_the_hour=60;
-	uint16_t second_of_the_minutes=60;
-	*hh=runTime/(minutes_of_the_hour*second_of_the_minutes);
-	*mm=(runTime-(*hh)*minutes_of_the_hour*second_of_the_minutes)/second_of_the_minutes;
-	*ss=(runTime-(*hh)*minutes_of_the_hour*second_of_the_minutes-(*mm)*second_of_the_minutes);
+	const uint16_t MINUTES_OF_THE_HOUR=60;
+	const uint16_t SECOND_OF_THE_HOUR=60;
+	*hh=runTime/(MINUTES_OF_THE_HOUR*SECOND_OF_THE_HOUR);
+	*mm=(runTime-(*hh)*MINUTES_OF_THE_HOUR*SECOND_OF_THE_HOUR)/SECOND_OF_THE_HOUR;
+	*ss=(runTime-(*hh)*MINUTES_OF_THE_HOUR*SECOND_OF_THE_HOUR-(*mm)*SECOND_OF_THE_HOUR);
 	if(runTime>=86399)
 	{
 	runTime=0; *hh=0; *mm=0; *ss=0;

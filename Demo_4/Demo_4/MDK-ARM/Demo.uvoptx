@@ -193,17 +193,22 @@
         <Ww>
           <count>8</count>
           <WinNumber>1</WinNumber>
-          <ItemText>HH,0x0A</ItemText>
+          <ItemText>hh,0x0A</ItemText>
         </Ww>
         <Ww>
           <count>9</count>
           <WinNumber>1</WinNumber>
-          <ItemText>MM,0x0A</ItemText>
+          <ItemText>mm,0x0A</ItemText>
         </Ww>
         <Ww>
           <count>10</count>
           <WinNumber>1</WinNumber>
-          <ItemText>SS,0x0A</ItemText>
+          <ItemText>ss,0x0A</ItemText>
+        </Ww>
+        <Ww>
+          <count>11</count>
+          <WinNumber>1</WinNumber>
+          <ItemText>runTime,0x0A</ItemText>
         </Ww>
       </WatchWindow1>
       <Tracepoint>
@@ -324,7 +329,7 @@
 
   <Group>
     <GroupName>Drivers/STM32L1xx_HAL_Driver</GroupName>
-    <tvExp>0</tvExp>
+    <tvExp>1</tvExp>
     <tvExpOptDlg>0</tvExpOptDlg>
     <cbSel>0</cbSel>
     <RteFlg>0</RteFlg>

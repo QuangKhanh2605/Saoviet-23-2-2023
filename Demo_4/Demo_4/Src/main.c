@@ -20,6 +20,7 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim);
 void delay_1ms(void);
 void delay_s(int time);
 void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin);
+
 uint32_t runTime=0;
 uint16_t time1=1; //so giay cho an
 uint16_t time2=1;	//so phut giua 2 chu ky ban
@@ -40,6 +41,7 @@ uint16_t hh, mm, ss;
 uint16_t BT_Enter, BT_Down, BT_Up, BT_Esc;
 
 CLCD_Name LCD;
+
 void set(uint32_t *t, GPIO_TypeDef* GPIO1, uint16_t GPIO_Pin1, 
                       GPIO_TypeDef* GPIO2, uint16_t GPIO_Pin2,  
                       GPIO_TypeDef* GPIO3, uint16_t GPIO_Pin3);
@@ -50,8 +52,6 @@ void reset(uint32_t *t, GPIO_TypeDef* GPIO1, uint16_t GPIO_Pin1,
 
 void check_test(void);
 void set_time(uint16_t *hh, uint16_t *mm, uint16_t *ss);
-
-void setup(void);
 
 int main(void)
 {
@@ -67,11 +67,13 @@ int main(void)
 	runTime=0;
 	countState=0;
 	State=1;
+	
 	while (State==1) 
 	{
 		CLCD_SetCursor(&LCD,3,0);
 		CLCD_WriteString(&LCD,"Nhan ENTER");
 	}
+	
   while (1)
   {	
 		set_time(&hh, &mm, &ss);

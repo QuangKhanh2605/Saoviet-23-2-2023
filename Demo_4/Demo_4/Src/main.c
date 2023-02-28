@@ -200,10 +200,11 @@ void set_time(uint16_t *hh, uint16_t *mm, uint16_t *ss)
 {
 	const uint16_t MINUTES_OF_THE_HOUR=60;
 	const uint16_t SECOND_OF_THE_HOUR=60;
+	const uint32_t SECOND_OF_THE_DAY=86400;
 	*hh=runTime/(MINUTES_OF_THE_HOUR*SECOND_OF_THE_HOUR);
 	*mm=(runTime-(*hh)*MINUTES_OF_THE_HOUR*SECOND_OF_THE_HOUR)/SECOND_OF_THE_HOUR;
 	*ss=(runTime-(*hh)*MINUTES_OF_THE_HOUR*SECOND_OF_THE_HOUR-(*mm)*SECOND_OF_THE_HOUR);
-	if(runTime>=86399)
+	if(runTime>=SECOND_OF_THE_DAY-1)
 	{
 	runTime=0; *hh=0; *mm=0; *ss=0;
 	}

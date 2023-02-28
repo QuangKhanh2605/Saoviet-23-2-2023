@@ -107,11 +107,11 @@ int main(void)
 		}
 		else 
 		{
-			press_click_BT_up(&BT_up, ptrStamp);
-			press_click_BT_down(&BT_down, ptrStamp);
+			BT_Press_Click_Up(&BT_up, ptrStamp);
+			BT_Press_Click_Down(&BT_down, ptrStamp);
 			
-			press_hold_BT_up(GPIOB, GPIO_PIN_3, ptrStamp);
-			press_hold_BT_down(GPIOB, GPIO_PIN_4, ptrStamp);
+			BT_Press_Hold_Up(GPIOB, GPIO_PIN_3, ptrStamp);
+			BT_Press_Hold_Down(GPIOB, GPIO_PIN_4, ptrStamp);
 			
 			LCD_setup_X1(&LCD, hh, mm, ss, setupCount);
 			LCD_setup_X2(&LCD, *ptrStamp, setupCount);

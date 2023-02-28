@@ -7,11 +7,11 @@
 
 void HAL_SYSTICK_Callback(void);
 
-void press_click_BT_up(uint16_t *BT_up, uint16_t *ptr_stamp);
-void press_click_BT_down(uint16_t *BT_down, uint16_t *ptr_stamp);
+void BT_Press_Click_Up(uint16_t *BT_up, uint16_t *ptr_stamp);
+void BT_Press_Click_Down(uint16_t *BT_down, uint16_t *ptr_stamp);
 
-void press_hold_BT_up( GPIO_TypeDef* GPIOx, uint16_t GPIO_Pinx, uint16_t *ptr_stamp);
-void press_hold_BT_down( GPIO_TypeDef* GPIOx, uint16_t GPIO_Pinx, uint16_t *ptr_stamp);
+void BT_Press_Hold_Up( GPIO_TypeDef* GPIOx, uint16_t GPIO_Pinx, uint16_t *ptr_stamp);
+void BT_Press_Hold_Down( GPIO_TypeDef* GPIOx, uint16_t GPIO_Pinx, uint16_t *ptr_stamp);
 
 
 #endif

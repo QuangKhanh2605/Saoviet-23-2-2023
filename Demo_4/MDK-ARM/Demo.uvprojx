@@ -477,11 +477,6 @@
               <FileType>1</FileType>
               <FilePath>../Drivers/STM32L1xx_HAL_Driver/Src/stm32l1xx_hal_cortex.c</FilePath>
             </File>
-            <File>
-              <FileName>CLCD.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\Drivers\STM32L1xx_HAL_Driver\Src\CLCD.c</FilePath>
-            </File>
           </Files>
         </Group>
         <Group>
@@ -513,9 +508,9 @@
               <FilePath>..\Drivers\Mylib_driver\Src\Relay_Led.c</FilePath>
             </File>
             <File>
-              <FileName>Relay_Led.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>..\Drivers\Mylib_driver\Inc\Relay_Led.h</FilePath>
+              <FileName>CLCD.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Drivers\Mylib_driver\Src\CLCD.c</FilePath>
             </File>
           </Files>
         </Group>

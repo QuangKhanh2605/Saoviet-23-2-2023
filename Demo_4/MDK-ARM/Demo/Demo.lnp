@@ -16,11 +16,11 @@
 "demo\stm32l1xx_hal_pwr.o"
 "demo\stm32l1xx_hal_pwr_ex.o"
 "demo\stm32l1xx_hal_cortex.o"
-"demo\clcd_1.o"
 "demo\system_stm32l1xx.o"
 "demo\user_lcd.o"
 "demo\check_button.o"
 "demo\relay_led.o"
+"demo\clcd.o"
 --library_type=microlib --strict --scatter "Demo\Demo.sct"
 --summary_stderr --info summarysizes --map --load_addr_map_info --xref --callgraph --symbols
 --info sizes --info totals --info unused --info veneers

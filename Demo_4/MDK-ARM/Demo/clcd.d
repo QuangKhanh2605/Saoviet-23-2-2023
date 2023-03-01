@@ -1,5 +1,5 @@
-demo\clcd.o: ..\Drivers\STM32L1xx_HAL_Driver\Src\CLCD.c
-demo\clcd.o: ../Drivers/STM32L1xx_HAL_Driver/Inc/CLCD.h
+demo\clcd.o: ..\Drivers\Mylib_driver\Src\CLCD.c
+demo\clcd.o: ..\Drivers\Mylib_driver\Inc\CLCD.h
 demo\clcd.o: ../Drivers/STM32L1xx_HAL_Driver/Inc/stm32l1xx_hal.h
 demo\clcd.o: ../Inc/stm32l1xx_hal_conf.h
 demo\clcd.o: ../Drivers/STM32L1xx_HAL_Driver/Inc/stm32l1xx_hal_rcc.h

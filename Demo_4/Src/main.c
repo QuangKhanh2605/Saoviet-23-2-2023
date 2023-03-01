@@ -20,8 +20,8 @@ static void MX_TIM2_Init(void);
 void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim);
 void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin);
 
-void delay_1ms(void);
-void delay_s(int time);
+void Delay_1ms(void);
+void Delay_s(int time);
 void Check_Test(void);
 void Set_Time(uint16_t *hh, uint16_t *mm, uint16_t *ss);
 void Run_Feed_Shrimp(void);
@@ -58,7 +58,7 @@ int main(void)
   MX_GPIO_Init();
   MX_TIM2_Init();
 	HAL_TIM_Base_Start_IT(&htim2);
-	CLCD_4BIT_Init(&LCD, 16,2, GPIOC, GPIO_PIN_8,GPIOC, GPIO_PIN_7,
+  CLCD_4BIT_Init(&LCD, 16,2, GPIOC, GPIO_PIN_8,GPIOC, GPIO_PIN_7,
                              GPIOC, GPIO_PIN_6,GPIOB, GPIO_PIN_15,
                              GPIOB, GPIO_PIN_14,GPIOB, GPIO_PIN_12);
 	
@@ -128,8 +128,6 @@ void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin)
 		if(State==1)
 		{
 			Check_Test();
-			runTime=0;
-			countState=0;
 			
 			time1=stampTime1;
 			time2=stampTime2;
@@ -191,7 +189,7 @@ void Set_Time(uint16_t *hh, uint16_t *mm, uint16_t *ss)
 
 void Check_Test(void)
 {
-	if(State == 0)
+	if(State == 1)
 	{
 		Reset_Relay_Led(GPIOC, RELAY1, GPIOC, RELAY2,GPIOC, LED5);
 		Reset_Relay_Led(GPIOA, RELAY3, GPIOA, RELAY4,GPIOC, LED6);
@@ -211,14 +209,14 @@ void BT_Check_Up_Down(void)
 
 void LCD_Display_Running(void)
 {
-	LCD_running_X1(&LCD, hh, mm, ss);
-	LCD_running_X2(&LCD, time1, time2, time3);
+	LCD_Running_X1(&LCD, hh, mm, ss);
+	LCD_Running_X2(&LCD, time1, time2, time3);
 }
 
 void LCD_Display_Setup(void)
 {
-	LCD_setup_X1(&LCD, hh, mm, ss, setupCount);
-	LCD_setup_X2(&LCD, *ptrStamp, setupCount);
+	LCD_Setup_X1(&LCD, hh, mm, ss, setupCount);
+	LCD_Setup_X2(&LCD, *ptrStamp, setupCount);
 }
 
 void SystemClock_Config(void)
@@ -379,17 +377,17 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
   UNUSED(htim);
 	runTime++;
 }
-void delay_1ms(void)
+void Delay_1ms(void)
 {
 	__HAL_TIM_SetCounter(&htim2,0);
 	while (__HAL_TIM_GetCounter(&htim2)<1000);
 }
-void delay_s(int time)
+void Delay_s(int time)
 {
 	int i=0;
 	for(i=0;i<time;i++)
 	{
-		delay_1ms();
+		Delay_1ms();
 	}
 }
 

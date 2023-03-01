@@ -25,7 +25,6 @@ void Variable_To_Char(char time[], uint16_t stamp, uint16_t *lengthStamp)
 		Division=Division*10;
 		(*lengthStamp)++;
 	}
-		time[*lengthStamp]=' ';
 		for(int j=*lengthStamp-1;j>=0;j--)
 		{
 		time[j]=stamp%10+ACSII_value_number;
@@ -42,8 +41,7 @@ void LCD_Run_Time(char time[],char hh[], char mm[], char ss[])
 	time[8]=NULL;
 }
 
-
-void LCD_running_X1(CLCD_Name* LCD, uint16_t hh, uint16_t mm, uint16_t ss)
+void LCD_Running_X1(CLCD_Name* LCD, uint16_t hh, uint16_t mm, uint16_t ss)
 {
 	
 	CLCD_SetCursor(LCD,0,0);
@@ -63,7 +61,7 @@ void LCD_running_X1(CLCD_Name* LCD, uint16_t hh, uint16_t mm, uint16_t ss)
 //	CLCD_SetCursor(LCD,8,0);
 //	CLCD_WriteString(LCD,h);
 }
-void LCD_running_X2(CLCD_Name* LCD, uint16_t t1, uint16_t t2, uint16_t t3)
+void LCD_Running_X2(CLCD_Name* LCD, uint16_t t1, uint16_t t2, uint16_t t3)
 {
 	char LCD_send[16];
 	sprintf(LCD_send,"T1:%d T2:%d T3:%d     ", t1,t2,t3);
@@ -71,7 +69,7 @@ void LCD_running_X2(CLCD_Name* LCD, uint16_t t1, uint16_t t2, uint16_t t3)
 	CLCD_WriteString(LCD,LCD_send);
 }
 
-void LCD_setup_X1(CLCD_Name* LCD, uint16_t hh, uint16_t mm, uint16_t ss, uint16_t setupCount)
+void LCD_Setup_X1(CLCD_Name* LCD, uint16_t hh, uint16_t mm, uint16_t ss, uint16_t setupCount)
 {
 	CLCD_SetCursor(LCD,0,0);
 	if(setupCount==1) 			CLCD_WriteString(LCD,"SET_T1 ");
@@ -88,10 +86,12 @@ void LCD_setup_X1(CLCD_Name* LCD, uint16_t hh, uint16_t mm, uint16_t ss, uint16_
 	CLCD_SetCursor(LCD,8,0);
 	CLCD_WriteString(LCD,time);
 }
-void LCD_setup_X2(CLCD_Name* LCD, uint16_t time, uint16_t setupCount)
+
+void LCD_Setup_X2(CLCD_Name* LCD, uint16_t time, uint16_t setupCount)
 {
 	char LCD_send[16];
 	uint16_t lengthStamp=1;
+	
 	CLCD_SetCursor(LCD,0,1);
 	if(setupCount==1)       CLCD_WriteString(LCD,"T1:");
 	else if(setupCount==2)  CLCD_WriteString(LCD,"T1:");
@@ -101,11 +101,10 @@ void LCD_setup_X2(CLCD_Name* LCD, uint16_t time, uint16_t setupCount)
 	CLCD_SetCursor(LCD,3,1);
 	CLCD_WriteString(LCD,LCD_send);
 	
-	CLCD_SetCursor(LCD,4+lengthStamp,1);
-	if(setupCount==1)       CLCD_WriteString(LCD,"Giay ");
-	else if(setupCount==2)  CLCD_WriteString(LCD,"Phut ");
-	if(setupCount==3)       CLCD_WriteString(LCD,"Giay ");	
-
+	CLCD_SetCursor(LCD,3+lengthStamp,1);
+	if(setupCount==1)       CLCD_WriteString(LCD," Giay           ");
+	else if(setupCount==2)  CLCD_WriteString(LCD," Phut           ");
+	if(setupCount==3)       CLCD_WriteString(LCD," Giay           ");	
 }
 
 

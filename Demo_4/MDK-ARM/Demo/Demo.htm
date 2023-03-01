@@ -3,7 +3,7 @@
 <title>Static Call Graph - [Demo\Demo.axf]</title></head>
 <body><HR>
 <H1>Static Call Graph for image Demo\Demo.axf</H1><HR>
-<BR><P>#&#060CALLGRAPH&#062# ARM Linker, 5060750: Last Updated: Wed Mar 01 11:02:10 2023
+<BR><P>#&#060CALLGRAPH&#062# ARM Linker, 5060750: Last Updated: Wed Mar 01 11:56:02 2023
 <BR><P>
 <H3>Maximum Stack Usage =        224 bytes + Unknown(Cycles, Untraceable Function Pointers)</H3><H3>
 Call chain for Maximum Stack Depth:</H3>
@@ -350,10 +350,10 @@ Global Symbols
 <BR>[Calls]<UL><LI><a href="#[53]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;CLCD_Write8
 <LI><a href="#[50]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;CLCD_Write4
 </UL>
-<BR>[Called By]<UL><LI><a href="#[7e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LCD_setup_X2
-<LI><a href="#[7d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LCD_setup_X1
-<LI><a href="#[7b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LCD_running_X2
-<LI><a href="#[7a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LCD_running_X1
+<BR>[Called By]<UL><LI><a href="#[7e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LCD_Setup_X2
+<LI><a href="#[7d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LCD_Setup_X1
+<LI><a href="#[7b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LCD_Running_X2
+<LI><a href="#[7a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LCD_Running_X1
 <LI><a href="#[3e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main
 </UL>
 
@@ -371,10 +371,10 @@ Global Symbols
 </UL>
 <BR>[Calls]<UL><LI><a href="#[55]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;CLCD_WriteChar
 </UL>
-<BR>[Called By]<UL><LI><a href="#[7e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LCD_setup_X2
-<LI><a href="#[7d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LCD_setup_X1
-<LI><a href="#[7b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LCD_running_X2
-<LI><a href="#[7a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LCD_running_X1
+<BR>[Called By]<UL><LI><a href="#[7e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LCD_Setup_X2
+<LI><a href="#[7d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LCD_Setup_X1
+<LI><a href="#[7b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LCD_Running_X2
+<LI><a href="#[7a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LCD_Running_X1
 <LI><a href="#[3e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main
 </UL>
 
@@ -430,7 +430,7 @@ Global Symbols
 <BR>[Called By]<UL><LI><a href="#[4f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;CLCD_Delay
 </UL>
 
-<P><STRONG><a name="[5b]"></a>HAL_GPIO_EXTI_Callback</STRONG> (Thumb, 224 bytes, Stack size 8 bytes, main.o(i.HAL_GPIO_EXTI_Callback))
+<P><STRONG><a name="[5b]"></a>HAL_GPIO_EXTI_Callback</STRONG> (Thumb, 214 bytes, Stack size 8 bytes, main.o(i.HAL_GPIO_EXTI_Callback))
 <BR><BR>[Stack]<UL><LI>Max Depth = 56<LI>Call Chain = HAL_GPIO_EXTI_Callback &rArr; Check_Test &rArr; Reset_Relay_Led
 </UL>
 <BR>[Calls]<UL><LI><a href="#[57]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Check_Test
@@ -646,19 +646,19 @@ Global Symbols
 <BR>[Address Reference Count : 1]<UL><LI> startup_stm32l151xc.o(RESET)
 </UL>
 <P><STRONG><a name="[79]"></a>LCD_Display_Running</STRONG> (Thumb, 40 bytes, Stack size 8 bytes, main.o(i.LCD_Display_Running))
-<BR><BR>[Stack]<UL><LI>Max Depth = 128<LI>Call Chain = LCD_Display_Running &rArr; LCD_running_X2 &rArr; CLCD_WriteString &rArr; CLCD_WriteChar &rArr; CLCD_Write4 &rArr; CLCD_Delay &rArr; HAL_Delay
+<BR><BR>[Stack]<UL><LI>Max Depth = 128<LI>Call Chain = LCD_Display_Running &rArr; LCD_Running_X2 &rArr; CLCD_WriteString &rArr; CLCD_WriteChar &rArr; CLCD_Write4 &rArr; CLCD_Delay &rArr; HAL_Delay
 </UL>
-<BR>[Calls]<UL><LI><a href="#[7b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LCD_running_X2
-<LI><a href="#[7a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LCD_running_X1
+<BR>[Calls]<UL><LI><a href="#[7b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LCD_Running_X2
+<LI><a href="#[7a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LCD_Running_X1
 </UL>
 <BR>[Called By]<UL><LI><a href="#[3e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main
 </UL>
 
 <P><STRONG><a name="[7c]"></a>LCD_Display_Setup</STRONG> (Thumb, 44 bytes, Stack size 8 bytes, main.o(i.LCD_Display_Setup))
-<BR><BR>[Stack]<UL><LI>Max Depth = 136<LI>Call Chain = LCD_Display_Setup &rArr; LCD_setup_X1 &rArr; CLCD_WriteString &rArr; CLCD_WriteChar &rArr; CLCD_Write4 &rArr; CLCD_Delay &rArr; HAL_Delay
+<BR><BR>[Stack]<UL><LI>Max Depth = 136<LI>Call Chain = LCD_Display_Setup &rArr; LCD_Setup_X1 &rArr; CLCD_WriteString &rArr; CLCD_WriteChar &rArr; CLCD_Write4 &rArr; CLCD_Delay &rArr; HAL_Delay
 </UL>
-<BR>[Calls]<UL><LI><a href="#[7e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LCD_setup_X2
-<LI><a href="#[7d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LCD_setup_X1
+<BR>[Calls]<UL><LI><a href="#[7e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LCD_Setup_X2
+<LI><a href="#[7d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LCD_Setup_X1
 </UL>
 <BR>[Called By]<UL><LI><a href="#[3e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main
 </UL>
@@ -666,12 +666,12 @@ Global Symbols
 <P><STRONG><a name="[80]"></a>LCD_Run_Time</STRONG> (Thumb, 38 bytes, Stack size 8 bytes, user_lcd.o(i.LCD_Run_Time))
 <BR><BR>[Stack]<UL><LI>Max Depth = 8<LI>Call Chain = LCD_Run_Time
 </UL>
-<BR>[Called By]<UL><LI><a href="#[7d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LCD_setup_X1
-<LI><a href="#[7a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LCD_running_X1
+<BR>[Called By]<UL><LI><a href="#[7d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LCD_Setup_X1
+<LI><a href="#[7a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LCD_Running_X1
 </UL>
 
-<P><STRONG><a name="[7a]"></a>LCD_running_X1</STRONG> (Thumb, 88 bytes, Stack size 40 bytes, user_lcd.o(i.LCD_running_X1))
-<BR><BR>[Stack]<UL><LI>Max Depth = 120<LI>Call Chain = LCD_running_X1 &rArr; CLCD_WriteString &rArr; CLCD_WriteChar &rArr; CLCD_Write4 &rArr; CLCD_Delay &rArr; HAL_Delay
+<P><STRONG><a name="[7a]"></a>LCD_Running_X1</STRONG> (Thumb, 88 bytes, Stack size 40 bytes, user_lcd.o(i.LCD_Running_X1))
+<BR><BR>[Stack]<UL><LI>Max Depth = 120<LI>Call Chain = LCD_Running_X1 &rArr; CLCD_WriteString &rArr; CLCD_WriteChar &rArr; CLCD_Write4 &rArr; CLCD_Delay &rArr; HAL_Delay
 </UL>
 <BR>[Calls]<UL><LI><a href="#[56]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;CLCD_WriteString
 <LI><a href="#[52]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;CLCD_SetCursor
@@ -681,8 +681,8 @@ Global Symbols
 <BR>[Called By]<UL><LI><a href="#[79]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LCD_Display_Running
 </UL>
 
-<P><STRONG><a name="[7b]"></a>LCD_running_X2</STRONG> (Thumb, 48 bytes, Stack size 40 bytes, user_lcd.o(i.LCD_running_X2))
-<BR><BR>[Stack]<UL><LI>Max Depth = 120<LI>Call Chain = LCD_running_X2 &rArr; CLCD_WriteString &rArr; CLCD_WriteChar &rArr; CLCD_Write4 &rArr; CLCD_Delay &rArr; HAL_Delay
+<P><STRONG><a name="[7b]"></a>LCD_Running_X2</STRONG> (Thumb, 48 bytes, Stack size 40 bytes, user_lcd.o(i.LCD_Running_X2))
+<BR><BR>[Stack]<UL><LI>Max Depth = 120<LI>Call Chain = LCD_Running_X2 &rArr; CLCD_WriteString &rArr; CLCD_WriteChar &rArr; CLCD_Write4 &rArr; CLCD_Delay &rArr; HAL_Delay
 </UL>
 <BR>[Calls]<UL><LI><a href="#[56]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;CLCD_WriteString
 <LI><a href="#[52]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;CLCD_SetCursor
@@ -691,8 +691,8 @@ Global Symbols
 <BR>[Called By]<UL><LI><a href="#[79]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LCD_Display_Running
 </UL>
 
-<P><STRONG><a name="[7d]"></a>LCD_setup_X1</STRONG> (Thumb, 122 bytes, Stack size 48 bytes, user_lcd.o(i.LCD_setup_X1))
-<BR><BR>[Stack]<UL><LI>Max Depth = 128<LI>Call Chain = LCD_setup_X1 &rArr; CLCD_WriteString &rArr; CLCD_WriteChar &rArr; CLCD_Write4 &rArr; CLCD_Delay &rArr; HAL_Delay
+<P><STRONG><a name="[7d]"></a>LCD_Setup_X1</STRONG> (Thumb, 122 bytes, Stack size 48 bytes, user_lcd.o(i.LCD_Setup_X1))
+<BR><BR>[Stack]<UL><LI>Max Depth = 128<LI>Call Chain = LCD_Setup_X1 &rArr; CLCD_WriteString &rArr; CLCD_WriteChar &rArr; CLCD_Write4 &rArr; CLCD_Delay &rArr; HAL_Delay
 </UL>
 <BR>[Calls]<UL><LI><a href="#[56]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;CLCD_WriteString
 <LI><a href="#[52]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;CLCD_SetCursor
@@ -702,8 +702,8 @@ Global Symbols
 <BR>[Called By]<UL><LI><a href="#[7c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LCD_Display_Setup
 </UL>
 
-<P><STRONG><a name="[7e]"></a>LCD_setup_X2</STRONG> (Thumb, 148 bytes, Stack size 40 bytes, user_lcd.o(i.LCD_setup_X2))
-<BR><BR>[Stack]<UL><LI>Max Depth = 120<LI>Call Chain = LCD_setup_X2 &rArr; CLCD_WriteString &rArr; CLCD_WriteChar &rArr; CLCD_Write4 &rArr; CLCD_Delay &rArr; HAL_Delay
+<P><STRONG><a name="[7e]"></a>LCD_Setup_X2</STRONG> (Thumb, 148 bytes, Stack size 40 bytes, user_lcd.o(i.LCD_Setup_X2))
+<BR><BR>[Stack]<UL><LI>Max Depth = 120<LI>Call Chain = LCD_Setup_X2 &rArr; CLCD_WriteString &rArr; CLCD_WriteChar &rArr; CLCD_Write4 &rArr; CLCD_Delay &rArr; HAL_Delay
 </UL>
 <BR>[Calls]<UL><LI><a href="#[56]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;CLCD_WriteString
 <LI><a href="#[52]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;CLCD_SetCursor
@@ -788,15 +788,15 @@ Global Symbols
 <P><STRONG><a name="[5]"></a>UsageFault_Handler</STRONG> (Thumb, 4 bytes, Stack size 0 bytes, stm32l1xx_it.o(i.UsageFault_Handler))
 <BR>[Address Reference Count : 1]<UL><LI> startup_stm32l151xc.o(RESET)
 </UL>
-<P><STRONG><a name="[82]"></a>Variable_To_Char</STRONG> (Thumb, 74 bytes, Stack size 16 bytes, user_lcd.o(i.Variable_To_Char))
+<P><STRONG><a name="[82]"></a>Variable_To_Char</STRONG> (Thumb, 70 bytes, Stack size 16 bytes, user_lcd.o(i.Variable_To_Char))
 <BR><BR>[Stack]<UL><LI>Max Depth = 16<LI>Call Chain = Variable_To_Char
 </UL>
-<BR>[Called By]<UL><LI><a href="#[7e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LCD_setup_X2
+<BR>[Called By]<UL><LI><a href="#[7e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LCD_Setup_X2
 </UL>
 
 <P><STRONG><a name="[7f]"></a>Variable_To_Char_Run_Time</STRONG> (Thumb, 42 bytes, Stack size 0 bytes, user_lcd.o(i.Variable_To_Char_Run_Time))
-<BR><BR>[Called By]<UL><LI><a href="#[7d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LCD_setup_X1
-<LI><a href="#[7a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LCD_running_X1
+<BR><BR>[Called By]<UL><LI><a href="#[7d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LCD_Setup_X1
+<LI><a href="#[7a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LCD_Running_X1
 </UL>
 
 <P><STRONG><a name="[8d]"></a>__0sprintf$1</STRONG> (Thumb, 34 bytes, Stack size 24 bytes, printf1.o(i.__0sprintf$1), UNUSED)
@@ -809,7 +809,7 @@ Global Symbols
 <P><STRONG><a name="[81]"></a>__2sprintf</STRONG> (Thumb, 0 bytes, Stack size 24 bytes, printf1.o(i.__0sprintf$1))
 <BR><BR>[Stack]<UL><LI>Max Depth = 24<LI>Call Chain = __2sprintf
 </UL>
-<BR>[Called By]<UL><LI><a href="#[7b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LCD_running_X2
+<BR>[Called By]<UL><LI><a href="#[7b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;LCD_Running_X2
 </UL>
 
 <P><STRONG><a name="[9e]"></a>__scatterload_copy</STRONG> (Thumb, 14 bytes, Stack size unknown bytes, handlers.o(i.__scatterload_copy), UNUSED)

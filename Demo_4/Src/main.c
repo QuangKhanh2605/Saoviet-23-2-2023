@@ -144,14 +144,11 @@ void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin)
 	
 	if(GPIO_Pin == GPIO_PIN_5 )
 	{
-		if(State==0)
-		{
 		if(setupCount==3) setupCount=1;
 		else 						  setupCount++;
 		if(setupCount==1 ) ptrStamp=&stampTime1;
 		if(setupCount==2 ) ptrStamp=&stampTime2;
 		if(setupCount==3 ) ptrStamp=&stampTime3;
-		}
 	}
 	
 	if(GPIO_Pin == GPIO_PIN_4 )
@@ -209,7 +206,7 @@ void BT_Check_Up_Down(void)
 void LCD_Display_Running(void)
 {
 	LCD_Running_X1(&LCD, hh, mm, ss);
-	LCD_Running_X2(&LCD, time1, time2, time3);
+	LCD_Setup_X2(&LCD, *ptrStamp, setupCount);
 }
 
 void LCD_Display_Setup(void)

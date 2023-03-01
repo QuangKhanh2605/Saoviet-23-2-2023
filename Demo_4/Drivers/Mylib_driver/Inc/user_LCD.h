@@ -2,6 +2,7 @@
 #define	__USER_LCD_H
 	
 #include "CLCD.h"
+#include "stm32l1xx_it.h"
 
 void LCD_Running_X1(CLCD_Name* LCD, uint16_t hh, uint16_t mm, uint16_t ss);
 void LCD_Running_X2(CLCD_Name* LCD, uint16_t time1, uint16_t time2, uint16_t time3);

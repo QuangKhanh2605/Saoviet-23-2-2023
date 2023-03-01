@@ -1,7 +1,6 @@
 demo\check_button.o: ..\Drivers\Mylib_driver\Src\check_Button.c
 demo\check_button.o: ..\Drivers\Mylib_driver\Inc\check_Button.h
 demo\check_button.o: ../Inc/stm32l1xx_it.h
-demo\check_button.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdio.h
 demo\check_button.o: ../Drivers/STM32L1xx_HAL_Driver/Inc/stm32l1xx_hal.h
 demo\check_button.o: ../Inc/stm32l1xx_hal_conf.h
 demo\check_button.o: ../Drivers/STM32L1xx_HAL_Driver/Inc/stm32l1xx_hal_rcc.h

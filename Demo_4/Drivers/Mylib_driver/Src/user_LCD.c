@@ -62,10 +62,11 @@ void LCD_Running_X1(CLCD_Name* LCD, uint16_t hh, uint16_t mm, uint16_t ss)
 
 void LCD_Running_X2(CLCD_Name* LCD, uint16_t t1, uint16_t t2, uint16_t t3)
 {
-	char LCD_send[16];
-	sprintf(LCD_send,"T1:%d T2:%d T3:%d     ", t1,t2,t3);
-	CLCD_SetCursor(LCD,0,1);
-	CLCD_WriteString(LCD,LCD_send);
+//	char LCD_send[16];
+//	//sprintf(LCD_send,"T1:%d T2:%d T3:%d     ", t1,t2,t3);
+//	CLCD_SetCursor(LCD,0,1);
+//	CLCD_WriteString(LCD,LCD_send);
+	
 }
 
 void LCD_Setup_X1(CLCD_Name* LCD, uint16_t hh, uint16_t mm, uint16_t ss, uint16_t setupCount)
@@ -93,8 +94,8 @@ void LCD_Setup_X2(CLCD_Name* LCD, uint16_t time, uint16_t setupCount)
 	
 	CLCD_SetCursor(LCD,0,1);
 	if(setupCount==1)       CLCD_WriteString(LCD,"T1:");
-	else if(setupCount==2)  CLCD_WriteString(LCD,"T1:");
-	if(setupCount==3)       CLCD_WriteString(LCD,"T1:");	
+	else if(setupCount==2)  CLCD_WriteString(LCD,"T2:");
+	if(setupCount==3)       CLCD_WriteString(LCD,"T3:");	
 	
 	Variable_To_Char(LCD_send, time, &lengthStamp);
 	CLCD_SetCursor(LCD,3,1);

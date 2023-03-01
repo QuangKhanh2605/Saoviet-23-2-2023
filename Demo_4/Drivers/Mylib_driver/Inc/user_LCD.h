@@ -1,7 +1,6 @@
 #ifndef __USER_LCD_H
 #define	__USER_LCD_H
 	
-#include <stdio.h>
 #include "CLCD.h"
 
 void LCD_Running_X1(CLCD_Name* LCD, uint16_t hh, uint16_t mm, uint16_t ss);

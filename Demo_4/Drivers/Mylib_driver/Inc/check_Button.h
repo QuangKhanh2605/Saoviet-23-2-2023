@@ -2,7 +2,6 @@
 #define __CHECK_BUTTON_H
 
 #include "stm32l1xx_it.h"
-#include <stdio.h>
 #include "stm32l1xx_hal.h"
 
 void HAL_SYSTICK_Callback(void);

@@ -1,5 +1,4 @@
 #include "user_LCD.h"
-#include "stdio.h"
 
 const uint16_t ACSII_value_number=48;
 
@@ -43,7 +42,6 @@ void LCD_Run_Time(char time[],char hh[], char mm[], char ss[])
 
 void LCD_Running_X1(CLCD_Name* LCD, uint16_t hh, uint16_t mm, uint16_t ss)
 {
-	
 	CLCD_SetCursor(LCD,0,0);
 	CLCD_WriteString(LCD,"Running ");
 	char h[3],m[3],s[3];
@@ -61,6 +59,7 @@ void LCD_Running_X1(CLCD_Name* LCD, uint16_t hh, uint16_t mm, uint16_t ss)
 //	CLCD_SetCursor(LCD,8,0);
 //	CLCD_WriteString(LCD,h);
 }
+
 void LCD_Running_X2(CLCD_Name* LCD, uint16_t t1, uint16_t t2, uint16_t t3)
 {
 	char LCD_send[16];

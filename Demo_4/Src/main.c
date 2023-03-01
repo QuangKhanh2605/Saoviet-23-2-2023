@@ -1,6 +1,5 @@
 #include "main.h"
 #include "CLCD.h"
-#include <stdio.h>
 #include "user_LCD.h"
 #include "check_Button.h"
 #include "Relay_Led.h"

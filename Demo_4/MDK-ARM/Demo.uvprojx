@@ -417,11 +417,6 @@
               <FileType>1</FileType>
               <FilePath>..\Src\user_check_button.c</FilePath>
             </File>
-            <File>
-              <FileName>user_check_button.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>..\Inc\user_check_button.h</FilePath>
-            </File>
           </Files>
         </Group>
         <Group>

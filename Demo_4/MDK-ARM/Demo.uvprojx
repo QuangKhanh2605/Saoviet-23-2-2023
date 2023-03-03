@@ -407,6 +407,21 @@
               <FileType>1</FileType>
               <FilePath>../Src/stm32l1xx_hal_msp.c</FilePath>
             </File>
+            <File>
+              <FileName>user_LCD_object.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Src\user_LCD_object.c</FilePath>
+            </File>
+            <File>
+              <FileName>user_check_button.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Src\user_check_button.c</FilePath>
+            </File>
+            <File>
+              <FileName>user_check_button.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\Inc\user_check_button.h</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>
@@ -511,6 +526,16 @@
               <FileName>CLCD.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\Drivers\Mylib_driver\Src\CLCD.c</FilePath>
+            </File>
+            <File>
+              <FileName>LCD_object.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Drivers\Mylib_driver\Src\LCD_object.c</FilePath>
+            </File>
+            <File>
+              <FileName>LCD_object.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\Drivers\Mylib_driver\Inc\LCD_object.h</FilePath>
             </File>
           </Files>
         </Group>

@@ -30,7 +30,10 @@ demo\main.o: ../Drivers/STM32L1xx_HAL_Driver/Inc/stm32l1xx_hal_tim.h
 demo\main.o: ../Drivers/STM32L1xx_HAL_Driver/Inc/stm32l1xx_hal_tim_ex.h
 demo\main.o: ..\Drivers\Mylib_driver\Inc\CLCD.h
 demo\main.o: ..\Drivers\Mylib_driver\Inc\user_LCD.h
-demo\main.o: ../Inc/stm32l1xx_it.h
 demo\main.o: ..\Drivers\Mylib_driver\Inc\check_Button.h
+demo\main.o: ../Inc/stm32l1xx_it.h
 demo\main.o: ..\Drivers\Mylib_driver\Inc\Relay_Led.h
 demo\main.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdio.h
+demo\main.o: ../Inc/user_LCD_object.h
+demo\main.o: ..\Drivers\Mylib_driver\Inc\LCD_object.h
+demo\main.o: ../Inc/user_check_button.h

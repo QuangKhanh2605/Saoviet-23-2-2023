@@ -12,5 +12,6 @@ void BT_Press_Click_Down(uint16_t *BT_down, uint16_t *ptr_stamp);
 void BT_Press_Hold_Up( GPIO_TypeDef* GPIOx, uint16_t GPIO_Pinx, uint16_t *ptr_stamp);
 void BT_Press_Hold_Down( GPIO_TypeDef* GPIOx, uint16_t GPIO_Pinx, uint16_t *ptr_stamp);
 
+uint32_t GET_SYSTICK_MS(void);
 
 #endif

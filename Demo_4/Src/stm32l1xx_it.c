@@ -58,8 +58,6 @@
 /* External variables --------------------------------------------------------*/
 extern TIM_HandleTypeDef htim2;
 
-
-
 //int run;
 /* USER CODE BEGIN EV */
 
@@ -186,7 +184,6 @@ void PendSV_Handler(void)
 void SysTick_Handler(void)
 {
   /* USER CODE BEGIN SysTick_IRQn 0 */
-
 
   HAL_IncTick();
 	HAL_SYSTICK_IRQHandler();

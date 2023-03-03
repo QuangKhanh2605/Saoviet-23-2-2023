@@ -3,6 +3,8 @@
 "demo\main.o"
 "demo\stm32l1xx_it.o"
 "demo\stm32l1xx_hal_msp.o"
+"demo\user_lcd_object.o"
+"demo\user_check_button.o"
 "demo\stm32l1xx_hal_tim.o"
 "demo\stm32l1xx_hal_tim_ex.o"
 "demo\stm32l1xx_hal.o"
@@ -21,6 +23,7 @@
 "demo\check_button.o"
 "demo\relay_led.o"
 "demo\clcd.o"
+"demo\lcd_object.o"
 --library_type=microlib --strict --scatter "Demo\Demo.sct"
 --summary_stderr --info summarysizes --map --load_addr_map_info --xref --callgraph --symbols
 --info sizes --info totals --info unused --info veneers

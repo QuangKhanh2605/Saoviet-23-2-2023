@@ -3,6 +3,8 @@
 #include "user_LCD.h"
 #include "check_Button.h"
 #include "Relay_Led.h"
+#include "user_LCD_object.h"
+#include "user_check_button.h"
 
 #define RELAY1 GPIO_PIN_2 
 #define RELAY2 GPIO_PIN_3
@@ -11,44 +13,36 @@
 #define LED5   GPIO_PIN_0
 #define LED6   GPIO_PIN_1
 
+uint32_t runTime=0;
+uint16_t time1=1; //so giay cho an
+uint16_t time2=2;	//so phut giua 2 chu ky ban
+uint16_t time3=1; //thoi gian giua 2 moto vang va chinh luong 
+
+uint16_t State=1;
+uint16_t checkState=0;
+uint16_t countState=0;
+uint16_t setupCount=1;
+
+//gio phut giay
+uint16_t hh, mm, ss;
+
+CLCD_Name LCD;
+
 TIM_HandleTypeDef htim2;
 
 void SystemClock_Config(void);
 static void MX_GPIO_Init(void);
 static void MX_TIM2_Init(void);
 void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim);
-void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin);
+
+void Check_BT_Callback(void);
 
 void Delay_1ms(void);
 void Delay_s(int time);
 void Check_Test(void);
 void Set_Time(uint16_t *hh, uint16_t *mm, uint16_t *ss);
 void Run_Feed_Shrimp(void);
-
-void LCD_Display_Running(void);
-void LCD_Display_Setup(void);
 void BT_Check_Up_Down(void);
-
-uint32_t runTime=0;
-uint16_t time1=1; //so giay cho an
-uint16_t time2=1;	//so phut giua 2 chu ky ban
-uint16_t time3=1; //thoi gian giua 2 moto vang va chinh luong 
-
-uint16_t setupCount=1;
-uint16_t stampTime1;
-uint16_t stampTime2;
-uint16_t stampTime3;
-uint16_t *ptrStamp;
-
-uint16_t State=1;
-uint16_t countState=0;
-
-//gio phut giay
-uint16_t hh, mm, ss;
-
-uint16_t BT_up, BT_down;
-
-CLCD_Name LCD;
 
 int main(void)
 {
@@ -60,26 +54,48 @@ int main(void)
   CLCD_4BIT_Init(&LCD, 16,2, GPIOC, GPIO_PIN_8,GPIOC, GPIO_PIN_7,
                              GPIOC, GPIO_PIN_6,GPIOB, GPIO_PIN_15,
                              GPIOB, GPIO_PIN_14,GPIOB, GPIO_PIN_12);
-	
+
 	while (State==1) 
 	{
 		CLCD_SetCursor(&LCD,3,0);
 		CLCD_WriteString(&LCD,"Nhan ENTER");
+		Check_BT_ENTER(&State, &checkState, &setupCount, time1, time2, time3);
 	}
+	
+	CLCD_SetCursor(&LCD, 8,0);
+	CLCD_WriteString(&LCD, "00:00:00");
+	
+	while (State==0)
+		{
+			USER_LCD_Display_Running_OR_Setup(State);
+			BT_Check_Up_Down();
+			USER_LCD_Display_Setup(&LCD, setupCount);
+			Check_BT_Callback();
+		}
 	
   while (1)
   {	
 		Set_Time(&hh, &mm, &ss);
 		Run_Feed_Shrimp();
 		
+		LCD_Change_State_Time_HH_MM_SS(hh,mm,ss);
+		UintTime_To_CharTime_HH_MM_SS(hh,  mm, ss);
+		USER_LCD_Display_Time(&LCD);
+		
+		Check_BT_Callback();
+		
+		if(State==0 )
+		{
+			USER_LCD_Display_Running_OR_Setup(State);
+			BT_Check_Up_Down();
+			USER_LCD_Display_Setup(&LCD, setupCount);
+		}
+		
 		if(State==1) 
 		{
-			LCD_Display_Running();
-		}
-		else 
-		{
-			BT_Check_Up_Down();
-			LCD_Display_Setup();
+			USER_LCD_Display_Running_OR_Setup(State);
+			USER_LCD_Display_Running(&LCD, setupCount);
+			Check_Test();
 		}
 	}
 }
@@ -87,85 +103,44 @@ int main(void)
 void Run_Feed_Shrimp(void)
 {
 	if(countState==0)
-		{
-			Set_Relay_Led(GPIOC, RELAY1, GPIOC, RELAY2,GPIOC, LED5);
-			countState++;
-			runTime=0;
-		}
-		if(countState==1 && runTime>=2 )
-		{
-			Set_Relay_Led(GPIOA, RELAY3, GPIOA, RELAY4,GPIOC, LED6);
-			countState++;
-			runTime=0;
-		}
-		if(countState==2 && runTime>=time1 )
-		{
-			Reset_Relay_Led(GPIOA, RELAY3, GPIOA, RELAY4,GPIOC, LED6);
-			countState++;
-			runTime=0;
-		}
-		if(countState==3 && runTime>=time3 )
-		{
-			Reset_Relay_Led(GPIOC, RELAY1, GPIOC, RELAY2,GPIOC, LED5);
-			countState++;
-			runTime=0;
-		}
-		if(countState==4 && runTime>=60*time2)
-		{
-			runTime=0;
-			countState=0;
-		}
+	{
+		Set_Relay_Led(GPIOC, RELAY1, GPIOC, RELAY2,GPIOC, LED5);
+		countState++;
+		runTime=0;
+	}
+	if(countState==1 && runTime>=2 )
+	{
+		Set_Relay_Led(GPIOA, RELAY3, GPIOA, RELAY4,GPIOC, LED6);
+		countState++;
+		runTime=0;
+	}
+	if(countState==2 && runTime>=time1 )
+	{
+		Reset_Relay_Led(GPIOA, RELAY3, GPIOA, RELAY4,GPIOC, LED6);
+		countState++;
+		runTime=0;
+	}
+	if(countState==3 && runTime>=time3 )
+	{
+		Reset_Relay_Led(GPIOC, RELAY1, GPIOC, RELAY2,GPIOC, LED5);
+		countState++;
+		runTime=0;
+	}
+	if(countState==4 && runTime>=60*time2)
+	{
+		runTime=0;
+		countState=0;
+	}
 }
 
-void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin)
+void Check_BT_Callback(void)
 {
-	if(GPIO_Pin == GPIO_PIN_2)
-	{
-		if (State==0) State=1;
-		else 				  State=0;
+	Check_BT_ENTER(&State, &checkState, &setupCount, time1, time2, time3);
+	Check_BT_ESC(State, &setupCount);
+	Check_BT_UP(State);
+	Check_BT_DOWN(State);
 		
-		if(State==1)
-		{
-			Check_Test();
-			
-			time1=stampTime1;
-			time2=stampTime2;
-			time3=stampTime3;
-		}
-		else
-		{
-			stampTime1=time1;
-			stampTime2=time2;
-			stampTime3=time3;
-		}
-		setupCount=1;
-		ptrStamp=&stampTime1;
-	}
-	
-	if(GPIO_Pin == GPIO_PIN_5 )
-	{
-		if(setupCount==3) setupCount=1;
-		else 						  setupCount++;
-		if(setupCount==1 ) ptrStamp=&stampTime1;
-		if(setupCount==2 ) ptrStamp=&stampTime2;
-		if(setupCount==3 ) ptrStamp=&stampTime3;
-	}
-	
-	if(GPIO_Pin == GPIO_PIN_4 )
-	{
-		if(State==0) 
-		{
-			BT_down=1;
-		}
-	}
-	
-	if(GPIO_Pin == GPIO_PIN_3)
-	{
-		if(State==0) 
-		{
-			BT_up=1;
-		}
-	}
+	Check_Test();
 }
 
 void Set_Time(uint16_t *hh, uint16_t *mm, uint16_t *ss)
@@ -177,6 +152,7 @@ void Set_Time(uint16_t *hh, uint16_t *mm, uint16_t *ss)
 	*hh=runTime/(MINUTES_OF_THE_HOUR*SECOND_OF_THE_HOUR);
 	*mm=(runTime-(*hh)*MINUTES_OF_THE_HOUR*SECOND_OF_THE_HOUR)/SECOND_OF_THE_HOUR;
 	*ss=(runTime-(*hh)*MINUTES_OF_THE_HOUR*SECOND_OF_THE_HOUR-(*mm)*SECOND_OF_THE_HOUR);
+	
 	if(runTime>=SECOND_OF_THE_DAY-1)
 	{
 	runTime=0; *hh=0; *mm=0; *ss=0;
@@ -185,34 +161,15 @@ void Set_Time(uint16_t *hh, uint16_t *mm, uint16_t *ss)
 
 void Check_Test(void)
 {
-	if(State == 1)
+	if(checkState==1)
 	{
 		Reset_Relay_Led(GPIOC, RELAY1, GPIOC, RELAY2,GPIOC, LED5);
 		Reset_Relay_Led(GPIOA, RELAY3, GPIOA, RELAY4,GPIOC, LED6);
 		countState=0;
 		runTime=0;
+		checkState=0;
 	}
-}
-
-void BT_Check_Up_Down(void)
-{
-	BT_Press_Click_Up(&BT_up, ptrStamp);
-	BT_Press_Click_Down(&BT_down, ptrStamp);
-			
-	BT_Press_Hold_Up(GPIOB, GPIO_PIN_3, ptrStamp);
-	BT_Press_Hold_Down(GPIOB, GPIO_PIN_4, ptrStamp);
-}
-
-void LCD_Display_Running(void)
-{
-	LCD_Running_X1(&LCD, hh, mm, ss);
-	LCD_Setup_X2(&LCD, *ptrStamp, setupCount);
-}
-
-void LCD_Display_Setup(void)
-{
-	LCD_Setup_X1(&LCD, hh, mm, ss, setupCount);
-	LCD_Setup_X2(&LCD, *ptrStamp, setupCount);
+	
 }
 
 void SystemClock_Config(void)
@@ -332,35 +289,15 @@ static void MX_GPIO_Init(void)
 
   /*Configure GPIO pin : PD2 */
   GPIO_InitStruct.Pin = GPIO_PIN_2;
-  GPIO_InitStruct.Mode = GPIO_MODE_IT_FALLING;
+  GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
   GPIO_InitStruct.Pull = GPIO_PULLUP;
   HAL_GPIO_Init(GPIOD, &GPIO_InitStruct);
 
-  /*Configure GPIO pins :  PB5 */
-  GPIO_InitStruct.Pin = GPIO_PIN_5;
-  GPIO_InitStruct.Mode = GPIO_MODE_IT_FALLING;
+  /*Configure GPIO pins : PB3 PB4 PB5 */
+  GPIO_InitStruct.Pin = GPIO_PIN_3|GPIO_PIN_4|GPIO_PIN_5;
+  GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
   GPIO_InitStruct.Pull = GPIO_PULLUP;
   HAL_GPIO_Init(GPIOB, &GPIO_InitStruct);
-	
-	/*Configure GPIO pins : PB3 PB4*/
-	GPIO_InitStruct.Pin = GPIO_PIN_3|GPIO_PIN_4;
-  GPIO_InitStruct.Mode = GPIO_MODE_IT_FALLING;
-  GPIO_InitStruct.Pull = GPIO_PULLUP;
-  HAL_GPIO_Init(GPIOB, &GPIO_InitStruct);
-
-
-  /* EXTI interrupt init*/
-  HAL_NVIC_SetPriority(EXTI2_IRQn, 1, 0);
-  HAL_NVIC_EnableIRQ(EXTI2_IRQn);
-
-  HAL_NVIC_SetPriority(EXTI3_IRQn, 1, 2);
-  HAL_NVIC_EnableIRQ(EXTI3_IRQn);
-
-  HAL_NVIC_SetPriority(EXTI4_IRQn, 1, 2);
-  HAL_NVIC_EnableIRQ(EXTI4_IRQn);
-
-  HAL_NVIC_SetPriority(EXTI9_5_IRQn,1, 1);
-  HAL_NVIC_EnableIRQ(EXTI9_5_IRQn);
 
 }
 

@@ -2,13 +2,15 @@
 
 uint16_t BT_enter=0, BT_esc=0, BT_up=0, BT_down=0;
 
+uint32_t stampTime1;
+uint32_t stampTime2;
+uint32_t stampTime3;
+uint32_t *ptrStamp;
 
-uint16_t stampTime1;
-uint16_t stampTime2;
-uint16_t stampTime3;
-uint16_t *ptrStamp;
+uint32_t startpage = FLASH_USER_START_ADDR;
+uint32_t check=1;
 
-void Check_BT_ENTER(uint16_t *State,uint16_t *checkState, uint16_t *setupCount, uint16_t time1, uint16_t time2, uint16_t time3)
+void Check_BT_ENTER(uint16_t *State,uint16_t *checkState, uint16_t *setupCount,uint32_t *time1, uint32_t *time2, uint32_t *time3)
 {
 	if(HAL_GPIO_ReadPin(GPIOD, GPIO_PIN_2)==0)
 	{
@@ -25,15 +27,16 @@ void Check_BT_ENTER(uint16_t *State,uint16_t *checkState, uint16_t *setupCount, 
 		{
 //			Check_Test();
 			*checkState=1;
-			time1=stampTime1;
-			time2=stampTime2;
-			time3=stampTime3;
+			*time1=stampTime1;
+			*time2=stampTime2;
+			*time3=stampTime3;
+			FLASH_WritePage(FLASH_USER_START_ADDR, FLASH_USER_END_ADDR, check, *time1, *time2, *time3);
 		}
 		else
 		{
-			stampTime1=time1;
-			stampTime2=time2;
-			stampTime3=time3;
+			stampTime1=*time1;
+			stampTime2=*time2;
+			stampTime3=*time3;
 		}
 		*setupCount=1;
 		ptrStamp=&stampTime1;
@@ -99,5 +102,29 @@ void BT_Check_Up_Down(void)
 	
 	UintTime_To_CharTime_T1_T2_T3(stampTime1, stampTime2, stampTime3);
 	
+}
+
+
+void FLASH_WritePage(uint32_t startPage, uint32_t endPage,uint32_t check, uint32_t data1,uint32_t data2,uint32_t data3)
+{
+  HAL_FLASH_Unlock();
+	FLASH_EraseInitTypeDef EraseInit;
+	EraseInit.TypeErase = FLASH_TYPEERASE_PAGES;
+	EraseInit.PageAddress = startPage;
+	EraseInit.NbPages = (endPage - startPage)/FLASH_PAGE_SIZE;
+	uint32_t PageError = 0;
+	HAL_FLASHEx_Erase(&EraseInit, &PageError);
+	HAL_FLASH_Program(FLASH_TYPEPROGRAM_WORD, startPage , check);
+	HAL_FLASH_Program(FLASH_TYPEPROGRAM_WORD, startPage + 4, data1); //4 byte dau tien
+	HAL_FLASH_Program(FLASH_TYPEPROGRAM_WORD, startPage + 8, data2); // 4byte tiep theo
+	HAL_FLASH_Program(FLASH_TYPEPROGRAM_WORD, startPage + 12, data3); // 4byte tiep theo
+  HAL_FLASH_Lock();
+}
+
+
+uint32_t FLASH_ReadData32(uint32_t addr)
+{
+	uint32_t data = *(__IO uint32_t *)(addr);
+	return data;
 }
 

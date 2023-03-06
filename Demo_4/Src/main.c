@@ -14,14 +14,15 @@
 #define LED6   GPIO_PIN_1
 
 uint32_t runTime=0;
-uint16_t time1=1; //so giay cho an
-uint16_t time2=2;	//so phut giua 2 chu ky ban
-uint16_t time3=1; //thoi gian giua 2 moto vang va chinh luong 
+uint32_t time1=10; //so giay cho an
+uint32_t time2=10;	//so phut giua 2 chu ky ban
+uint32_t time3=3; //thoi gian giua 2 moto vang va chinh luong 
 
 uint16_t State=1;
 uint16_t checkState=0;
 uint16_t countState=0;
 uint16_t setupCount=1;
+uint16_t check_Power_OFF=0;
 
 //gio phut giay
 uint16_t hh, mm, ss;
@@ -55,11 +56,22 @@ int main(void)
                              GPIOC, GPIO_PIN_6,GPIOB, GPIO_PIN_15,
                              GPIOB, GPIO_PIN_14,GPIOB, GPIO_PIN_12);
 
+	
+	check_Power_OFF=FLASH_ReadData32(FLASH_USER_START_ADDR);
+	
+	if(check_Power_OFF == 1)
+	{
+		time1=FLASH_ReadData32(FLASH_USER_START_ADDR + 4);
+		time2=FLASH_ReadData32(FLASH_USER_START_ADDR + 8);
+		time3=FLASH_ReadData32(FLASH_USER_START_ADDR + 12);
+		//check_Power_OFF=0;
+	}
+	
 	while (State==1) 
 	{
 		CLCD_SetCursor(&LCD,3,0);
 		CLCD_WriteString(&LCD,"Nhan ENTER");
-		Check_BT_ENTER(&State, &checkState, &setupCount, time1, time2, time3);
+		Check_BT_ENTER(&State, &checkState, &setupCount, &time1, &time2, &time3);
 	}
 	
 	CLCD_SetCursor(&LCD, 8,0);
@@ -76,16 +88,15 @@ int main(void)
   while (1)
   {	
 		Set_Time(&hh, &mm, &ss);
-		Run_Feed_Shrimp();
 		
 		LCD_Change_State_Time_HH_MM_SS(hh,mm,ss);
 		UintTime_To_CharTime_HH_MM_SS(hh,  mm, ss);
 		USER_LCD_Display_Time(&LCD);
 		
 		Check_BT_Callback();
-		
 		if(State==0 )
 		{
+			Check_Test();
 			USER_LCD_Display_Running_OR_Setup(State);
 			BT_Check_Up_Down();
 			USER_LCD_Display_Setup(&LCD, setupCount);
@@ -93,6 +104,7 @@ int main(void)
 		
 		if(State==1) 
 		{
+			Run_Feed_Shrimp();
 			USER_LCD_Display_Running_OR_Setup(State);
 			USER_LCD_Display_Running(&LCD, setupCount);
 			Check_Test();
@@ -108,7 +120,7 @@ void Run_Feed_Shrimp(void)
 		countState++;
 		runTime=0;
 	}
-	if(countState==1 && runTime>=2 )
+	if(countState==1 && runTime>=time3 )
 	{
 		Set_Relay_Led(GPIOA, RELAY3, GPIOA, RELAY4,GPIOC, LED6);
 		countState++;
@@ -126,7 +138,7 @@ void Run_Feed_Shrimp(void)
 		countState++;
 		runTime=0;
 	}
-	if(countState==4 && runTime>=60*time2)
+	if(countState==4 && runTime>=time2)
 	{
 		runTime=0;
 		countState=0;
@@ -135,12 +147,12 @@ void Run_Feed_Shrimp(void)
 
 void Check_BT_Callback(void)
 {
-	Check_BT_ENTER(&State, &checkState, &setupCount, time1, time2, time3);
+	Check_BT_ENTER(&State, &checkState, &setupCount, &time1, &time2, &time3);
 	Check_BT_ESC(State, &setupCount);
 	Check_BT_UP(State);
 	Check_BT_DOWN(State);
 		
-	Check_Test();
+	//Check_Test();
 }
 
 void Set_Time(uint16_t *hh, uint16_t *mm, uint16_t *ss)
@@ -169,7 +181,13 @@ void Check_Test(void)
 		runTime=0;
 		checkState=0;
 	}
-	
+	if(State==0)
+	{
+		Reset_Relay_Led(GPIOC, RELAY1, GPIOC, RELAY2,GPIOC, LED5);
+			Reset_Relay_Led(GPIOA, RELAY3, GPIOA, RELAY4,GPIOC, LED6);
+			countState=0;
+			runTime=0;
+	}
 }
 
 void SystemClock_Config(void)

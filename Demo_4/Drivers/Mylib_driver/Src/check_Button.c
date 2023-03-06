@@ -29,7 +29,7 @@ uint32_t GET_SYSTICK_MS(void)
 	return SYSTICK_count_ms;
 }
 
-void BT_Press_Click_Up(uint16_t *BT_up, uint16_t *ptr_stamp)
+void BT_Press_Click_Up(uint16_t *BT_up, uint32_t *ptr_stamp)
 {
 	if(*BT_up == 1)
 	{
@@ -38,7 +38,7 @@ void BT_Press_Click_Up(uint16_t *BT_up, uint16_t *ptr_stamp)
 	}
 }
 
-void BT_Press_Click_Down(uint16_t *BT_down, uint16_t *ptr_stamp)
+void BT_Press_Click_Down(uint16_t *BT_down, uint32_t *ptr_stamp)
 {
 	if(*BT_down == 1)
 	{
@@ -47,7 +47,7 @@ void BT_Press_Click_Down(uint16_t *BT_down, uint16_t *ptr_stamp)
 	}
 }
 
-void BT_Press_Hold_Up( GPIO_TypeDef* GPIOx, uint16_t GPIO_Pinx, uint16_t *ptr_stamp)
+void BT_Press_Hold_Up( GPIO_TypeDef* GPIOx, uint16_t GPIO_Pinx, uint32_t *ptr_stamp)
 {
 	if(HAL_GPIO_ReadPin(GPIOx,GPIO_Pinx)==0) 
 	{
@@ -64,7 +64,7 @@ void BT_Press_Hold_Up( GPIO_TypeDef* GPIOx, uint16_t GPIO_Pinx, uint16_t *ptr_st
 	}
 }
 
-void BT_Press_Hold_Down( GPIO_TypeDef* GPIOx, uint16_t GPIO_Pinx, uint16_t *ptr_stamp)
+void BT_Press_Hold_Down( GPIO_TypeDef* GPIOx, uint16_t GPIO_Pinx, uint32_t *ptr_stamp)
 {
 	if(HAL_GPIO_ReadPin(GPIOx,GPIO_Pinx)==0) 
 	{

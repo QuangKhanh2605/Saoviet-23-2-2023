@@ -18,7 +18,7 @@ LCD_Object_Display LCD_Running={"Running ",0,0,0};
 LCD_Object_Display LCD_Setup={"SETUP  ",0,0,0};
 
 LCD_Object_Display LCD_SetupT1={"T1:         Giay",0,1,1};
-LCD_Object_Display LCD_SetupT2={"T2:         Phut",0,1,1};
+LCD_Object_Display LCD_SetupT2={"T2:         Giay",0,1,1};
 LCD_Object_Display LCD_SetupT3={"T3:         Giay",0,1,1};
 
 LCD_Object_Display LCD_Time_HH={HH,8,0,1};

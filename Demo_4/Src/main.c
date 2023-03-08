@@ -16,7 +16,7 @@
 uint32_t runTime=0;
 uint32_t time1=10; //so giay cho an
 uint32_t time2=10;	//so phut giua 2 chu ky ban
-uint32_t time3=3; //thoi gian giua 2 moto vang va chinh luong 
+uint32_t time3=5; //thoi gian giua 2 moto vang va chinh luong 
 
 uint16_t State=1;
 uint16_t checkState=0;
@@ -67,24 +67,10 @@ int main(void)
 		//check_Power_OFF=0;
 	}
 	
-	while (State==1) 
-	{
-		CLCD_SetCursor(&LCD,3,0);
-		CLCD_WriteString(&LCD,"Nhan ENTER");
-		Check_BT_ENTER(&State, &checkState, &setupCount, &time1, &time2, &time3);
-	}
-	
 	CLCD_SetCursor(&LCD, 8,0);
 	CLCD_WriteString(&LCD, "00:00:00");
-	
-	while (State==0)
-		{
-			USER_LCD_Display_Running_OR_Setup(State);
-			BT_Check_Up_Down();
-			USER_LCD_Display_Setup(&LCD, setupCount);
-			Check_BT_Callback();
-		}
-	
+	Run_Begin(&setupCount, time1, time2, time3);
+
   while (1)
   {	
 		Set_Time(&hh, &mm, &ss);
@@ -97,8 +83,9 @@ int main(void)
 		if(State==0 )
 		{
 			Check_Test();
+			BT_Esc_Exit_Setup(&State, &setupCount, &time1, &time2, &time3);
 			USER_LCD_Display_Running_OR_Setup(State);
-			BT_Check_Up_Down();
+			if(setupCount!=3) BT_Check_Up_Down();
 			USER_LCD_Display_Setup(&LCD, setupCount);
 		}
 		

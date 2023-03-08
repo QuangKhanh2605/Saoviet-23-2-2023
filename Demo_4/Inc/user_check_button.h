@@ -17,5 +17,7 @@ void Check_BT_DOWN(uint16_t State);
 
 uint32_t FLASH_ReadData32(uint32_t addr);
 void FLASH_WritePage(uint32_t startPage, uint32_t endPage,uint32_t check, uint32_t data1,uint32_t data2,uint32_t data3);
+void Run_Begin(uint16_t *setupCount, uint32_t time1, uint32_t time2,uint32_t time3);
+void BT_Esc_Exit_Setup(uint16_t *State, uint16_t *setupCount,uint32_t *time1, uint32_t *time2, uint32_t *time3);
 
 #endif

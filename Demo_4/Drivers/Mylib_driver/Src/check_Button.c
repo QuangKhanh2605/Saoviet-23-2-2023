@@ -9,9 +9,12 @@ Add "HAL_SYSTICK_IRQHandler();" To "Systick_Handler" In "stm32L1xx_it.c"
 
 uint16_t check_BT_run_up=0;
 uint16_t check_BT_run_down=0;
+uint16_t check_BT_run_esc=0;
 
 uint16_t run_BT_time=0;
 uint16_t run_BT_begin=0;
+
+uint16_t run_BT_Esc_time=0;
 
 const uint16_t run_BT_end=500;
 const uint16_t run_BT_irq=200;
@@ -80,10 +83,31 @@ void BT_Press_Hold_Down( GPIO_TypeDef* GPIOx, uint16_t GPIO_Pinx, uint32_t *ptr_
 		check_BT_run_down=0;
 	}
 }
+
+void BT_Press_Hold_Esc( GPIO_TypeDef* GPIOx, uint16_t GPIO_Pinx, uint16_t *State)
+{
+	if(HAL_GPIO_ReadPin(GPIOx,GPIO_Pinx)==0 && *State==0) 
+	{
+	 check_BT_run_esc=1;
+	 if (run_BT_Esc_time>2000)
+	 {
+		*State=1;
+		 run_BT_Esc_time=0;
+		 check_BT_run_esc=0;
+	 }
+	}
+	if(HAL_GPIO_ReadPin(GPIOx,GPIO_Pinx)==1)
+	{
+		run_BT_Esc_time=0;
+		check_BT_run_esc=0;
+	}
+}
 	
 void HAL_SYSTICK_Callback(void)
 {
 	GET_SYSTICK_MS();
+	if(check_BT_run_esc==1)
+		run_BT_Esc_time++;
 	
 	if(check_BT_run_up == 1 || check_BT_run_down == 1) 
 	{

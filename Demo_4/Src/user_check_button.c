@@ -2,9 +2,9 @@
 
 uint16_t BT_enter=0, BT_esc=0, BT_up=0, BT_down=0;
 
-uint32_t stampTime1;
-uint32_t stampTime2;
-uint32_t stampTime3;
+uint32_t stampTime1=0;
+uint32_t stampTime2=0;
+uint32_t stampTime3=0;
 uint32_t *ptrStamp;
 
 uint32_t startpage = FLASH_USER_START_ADDR;
@@ -104,6 +104,18 @@ void BT_Check_Up_Down(void)
 	
 }
 
+void BT_Esc_Exit_Setup(uint16_t *State, uint16_t *setupCount,uint32_t *time1, uint32_t *time2, uint32_t *time3)
+{
+	BT_Press_Hold_Esc(GPIOB, GPIO_PIN_5, State);
+	if(*State==1)
+	{
+		stampTime1=*time1;
+		stampTime2=*time2;
+		stampTime3=*time3;
+		*setupCount=0;
+	}
+}
+
 
 void FLASH_WritePage(uint32_t startPage, uint32_t endPage,uint32_t check, uint32_t data1,uint32_t data2,uint32_t data3)
 {
@@ -126,5 +138,17 @@ uint32_t FLASH_ReadData32(uint32_t addr)
 {
 	uint32_t data = *(__IO uint32_t *)(addr);
 	return data;
+}
+
+void Run_Begin(uint16_t *setupCount, uint32_t time1, uint32_t time2,uint32_t time3)
+{
+	stampTime1=time1;
+	stampTime2=time2;
+	stampTime3=time3;
+	*setupCount=1;
+	ptrStamp=&stampTime1;
+	LCD_Change_State_Setup_T1_T2_T3(stampTime1, stampTime2, stampTime3);
+	
+	UintTime_To_CharTime_T1_T2_T3(stampTime1, stampTime2, stampTime3);
 }
 

@@ -79,12 +79,8 @@ void LCD_Display_Time(CLCD_Name* LCD,LCD_Object_Display *Name_Object1,
 	}
 	if(Name_Object3->state==1)
 	{
-		//run_start = HAL_GetTick();
 	LCD_Send_Data(LCD, Name_Object3);
 	Name_Object3->state=0;
-		//run_time = HAL_GetTick() - run_start;
-	//run_systick++;
-		//Time_SS.state=0;
 	}
 }
 

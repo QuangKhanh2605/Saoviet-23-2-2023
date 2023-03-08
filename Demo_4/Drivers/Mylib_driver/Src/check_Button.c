@@ -84,9 +84,9 @@ void BT_Press_Hold_Down( GPIO_TypeDef* GPIOx, uint16_t GPIO_Pinx, uint32_t *ptr_
 	}
 }
 
-void BT_Press_Hold_Esc( GPIO_TypeDef* GPIOx, uint16_t GPIO_Pinx, uint16_t *State)
+void BT_Press_Hold_Esc( GPIO_TypeDef* GPIOx, uint16_t GPIO_Pinx, uint16_t *State, uint16_t BT_up, uint16_t BT_down)
 {
-	if(HAL_GPIO_ReadPin(GPIOx,GPIO_Pinx)==0 && *State==0) 
+	if(HAL_GPIO_ReadPin(GPIOx,GPIO_Pinx)==0 && *State==0 && BT_up==0 && BT_down==0) 
 	{
 	 check_BT_run_esc=1;
 	 if (run_BT_Esc_time>2000)
@@ -96,7 +96,7 @@ void BT_Press_Hold_Esc( GPIO_TypeDef* GPIOx, uint16_t GPIO_Pinx, uint16_t *State
 		 check_BT_run_esc=0;
 	 }
 	}
-	if(HAL_GPIO_ReadPin(GPIOx,GPIO_Pinx)==1)
+	if(HAL_GPIO_ReadPin(GPIOx,GPIO_Pinx)==1 || BT_up==1 || BT_down==1)
 	{
 		run_BT_Esc_time=0;
 		check_BT_run_esc=0;

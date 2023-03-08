@@ -3,7 +3,7 @@
 <title>Static Call Graph - [Demo\Demo.axf]</title></head>
 <body><HR>
 <H1>Static Call Graph for image Demo\Demo.axf</H1><HR>
-<BR><P>#&#060CALLGRAPH&#062# ARM Linker, 5060750: Last Updated: Wed Mar 08 14:30:24 2023
+<BR><P>#&#060CALLGRAPH&#062# ARM Linker, 5060750: Last Updated: Wed Mar 08 15:24:03 2023
 <BR><P>
 <H3>Maximum Stack Usage =        224 bytes + Unknown(Cycles, Untraceable Function Pointers)</H3><H3>
 Call chain for Maximum Stack Depth:</H3>
@@ -290,7 +290,7 @@ Global Symbols
 
 <P><STRONG><a name="[af]"></a>__scatterload_rt2</STRONG> (Thumb, 0 bytes, Stack size 0 bytes, init.o(.text), UNUSED)
 
-<P><STRONG><a name="[47]"></a>BT_Check_Up_Down</STRONG> (Thumb, 92 bytes, Stack size 8 bytes, user_check_button.o(i.BT_Check_Up_Down))
+<P><STRONG><a name="[47]"></a>BT_Check_Up_Down</STRONG> (Thumb, 80 bytes, Stack size 8 bytes, user_check_button.o(i.BT_Check_Up_Down))
 <BR><BR>[Stack]<UL><LI>Max Depth = 40<LI>Call Chain = BT_Check_Up_Down &rArr; UintTime_To_CharTime_T1_T2_T3 &rArr; Variable_To_Char
 </UL>
 <BR>[Calls]<UL><LI><a href="#[4a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;BT_Press_Hold_Up
@@ -303,8 +303,8 @@ Global Symbols
 <BR>[Called By]<UL><LI><a href="#[3e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main
 </UL>
 
-<P><STRONG><a name="[4e]"></a>BT_Esc_Exit_Setup</STRONG> (Thumb, 60 bytes, Stack size 24 bytes, user_check_button.o(i.BT_Esc_Exit_Setup))
-<BR><BR>[Stack]<UL><LI>Max Depth = 40<LI>Call Chain = BT_Esc_Exit_Setup &rArr; BT_Press_Hold_Esc
+<P><STRONG><a name="[4e]"></a>BT_Esc_Exit_Setup</STRONG> (Thumb, 70 bytes, Stack size 32 bytes, user_check_button.o(i.BT_Esc_Exit_Setup))
+<BR><BR>[Stack]<UL><LI>Max Depth = 56<LI>Call Chain = BT_Esc_Exit_Setup &rArr; BT_Press_Hold_Esc
 </UL>
 <BR>[Calls]<UL><LI><a href="#[4f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;BT_Press_Hold_Esc
 </UL>
@@ -327,8 +327,8 @@ Global Symbols
 <BR>[Called By]<UL><LI><a href="#[47]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;BT_Check_Up_Down
 </UL>
 
-<P><STRONG><a name="[4f]"></a>BT_Press_Hold_Esc</STRONG> (Thumb, 76 bytes, Stack size 16 bytes, check_button.o(i.BT_Press_Hold_Esc))
-<BR><BR>[Stack]<UL><LI>Max Depth = 16<LI>Call Chain = BT_Press_Hold_Esc
+<P><STRONG><a name="[4f]"></a>BT_Press_Hold_Esc</STRONG> (Thumb, 96 bytes, Stack size 24 bytes, check_button.o(i.BT_Press_Hold_Esc))
+<BR><BR>[Stack]<UL><LI>Max Depth = 24<LI>Call Chain = BT_Press_Hold_Esc
 </UL>
 <BR>[Calls]<UL><LI><a href="#[50]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_GPIO_ReadPin
 </UL>
@@ -838,7 +838,7 @@ Global Symbols
 <LI><a href="#[61]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Check_Test
 </UL>
 
-<P><STRONG><a name="[97]"></a>Run_Begin</STRONG> (Thumb, 82 bytes, Stack size 24 bytes, user_check_button.o(i.Run_Begin))
+<P><STRONG><a name="[97]"></a>Run_Begin</STRONG> (Thumb, 70 bytes, Stack size 24 bytes, user_check_button.o(i.Run_Begin))
 <BR><BR>[Stack]<UL><LI>Max Depth = 56<LI>Call Chain = Run_Begin &rArr; UintTime_To_CharTime_T1_T2_T3 &rArr; Variable_To_Char
 </UL>
 <BR>[Calls]<UL><LI><a href="#[4d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;UintTime_To_CharTime_T1_T2_T3

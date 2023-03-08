@@ -1,8 +1,8 @@
 #include "user_LCD_object.h"
 
-uint16_t check_time1=0;
-uint16_t check_time2=0;
-uint16_t check_time3=0;
+uint32_t check_time1=0;
+uint32_t check_time2=0;
+uint32_t check_time3=0;
 
 uint32_t check_SS=0;
 uint16_t check_MM=0;
@@ -29,7 +29,7 @@ LCD_Object_Display LCD_Time1={stamp_time1,4,2,1};
 LCD_Object_Display LCD_Time2={stamp_time2,4,2,1};
 LCD_Object_Display LCD_Time3={stamp_time3,4,2,1};
 
-void LCD_Change_State_Setup_T1_T2_T3(uint16_t stampTime1, uint16_t stampTime2, uint16_t stampTime3)
+void LCD_Change_State_Setup_T1_T2_T3(uint32_t stampTime1, uint32_t stampTime2, uint32_t stampTime3)
 {
 	if (stampTime1!=check_time1)
 	{
@@ -78,7 +78,7 @@ void UintTime_To_CharTime_HH_MM_SS(uint16_t hh, uint16_t mm, uint16_t ss)
 	Variable_To_Char_Time(SS, ss);
 }
 
-void UintTime_To_CharTime_T1_T2_T3(uint16_t stampTime1, uint16_t stampTime2, uint16_t stampTime3)
+void UintTime_To_CharTime_T1_T2_T3(uint32_t stampTime1, uint32_t stampTime2, uint32_t stampTime3)
 {
 	Variable_To_Char(stamp_time1, stampTime1);
 	Variable_To_Char(stamp_time2, stampTime2);

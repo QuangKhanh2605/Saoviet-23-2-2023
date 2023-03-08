@@ -25,7 +25,6 @@ void Check_BT_ENTER(uint16_t *State,uint16_t *checkState, uint16_t *setupCount,u
 		
 		if(*State==1)
 		{
-//			Check_Test();
 			*checkState=1;
 			*time1=stampTime1;
 			*time2=stampTime2;
@@ -106,7 +105,7 @@ void BT_Check_Up_Down(void)
 
 void BT_Esc_Exit_Setup(uint16_t *State, uint16_t *setupCount,uint32_t *time1, uint32_t *time2, uint32_t *time3)
 {
-	BT_Press_Hold_Esc(GPIOB, GPIO_PIN_5, State);
+	BT_Press_Hold_Esc(GPIOB, GPIO_PIN_5, State, BT_up, BT_down);
 	if(*State==1)
 	{
 		stampTime1=*time1;

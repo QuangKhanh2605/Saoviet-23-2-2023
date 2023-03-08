@@ -64,7 +64,6 @@ int main(void)
 		time1=FLASH_ReadData32(FLASH_USER_START_ADDR + 4);
 		time2=FLASH_ReadData32(FLASH_USER_START_ADDR + 8);
 		time3=FLASH_ReadData32(FLASH_USER_START_ADDR + 12);
-		//check_Power_OFF=0;
 	}
 	
 	CLCD_SetCursor(&LCD, 8,0);
